@@ -1,0 +1,23 @@
+.header {
+  position: sticky;
+  top: 0;
+  background: white;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.nav a {
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  color: #004A99;
+}

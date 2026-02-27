@@ -1,264 +1,211 @@
-import React, { useEffect } from 'react'; 
+import React, { useState } from 'react'; 
 import { useCart } from '../components/CartContext'; 
 
 export default function PersonalizarFundas() { 
   const { addToCart } = useCart(); 
 
-  useEffect(() => { 
-    function updateValue(inputId, labelId, suffix = "") { 
-      const input = document.getElementById(inputId); 
-      const label = document.getElementById(labelId); 
-      if (!input || !label) return; 
+  const [ancho, setAncho] = useState(30);
+  const [alto, setAlto] = useState(40);
+  const [calibre, setCalibre] = useState(50);
+  const [cantidad, setCantidad] = useState(100);
+  const [color, setColor] = useState("Blanco");
+  const [material, setMaterial] = useState("Polietileno");
+  const [sello, setSello] = useState("Lateral");
+  
+  const [logo, setLogo] = useState(null);
+  const [posicionLogo, setPosicionLogo] = useState("center"); 
+  const [tamanoLogo, setTamanoLogo] = useState(30);
 
-      input.addEventListener("input", () => { 
-        label.textContent = `${input.value} ${suffix}`; 
-        updatePrice(); 
-      }); 
-    } 
+  const URL_BOLSA = "https://www.matrixcomercial.com/wp-content/uploads/2021/12/Funda-tipo-t-shirt-51.png";
 
-    function updatePrice() { 
-      const ancho = parseInt(document.getElementById("ancho")?.value || 0); 
-      const alto = parseInt(document.getElementById("alto")?.value || 0); 
-      const calibre = parseInt(document.getElementById("calibre")?.value || 0); 
-      const cantidad = parseInt(document.getElementById("cantidad")?.value || 0); 
+  const coloresMap = {
+    "Transparente": "rgba(200, 225, 255, 0.4)",
+    "Blanco": "#ffffff",
+    "Negro": "#333333", 
+    "Azul": "#2563eb",
+    "Rojo": "#dc2626"
+  };
 
-      let precio = ancho * alto * calibre * 0.002 * cantidad; 
-      precio = Math.max(precio, 100); 
+  const precioEstimado = Math.max(ancho * alto * calibre * 0.002 * parseInt(cantidad || 0), 100);
 
-      const precioEl = document.querySelector("#precio-estimado"); 
-      if (precioEl) { 
-        precioEl.textContent = 
-          "RD$" + precio.toLocaleString("es-DO", { minimumFractionDigits: 2 }); 
-      } 
-    } 
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) setLogo(URL.createObjectURL(file));
+  };
 
-    updateValue("ancho", "ancho-value", "cm"); 
-    updateValue("alto", "alto-value", "cm"); 
-    updateValue("calibre", "calibre-value", "micrones"); 
-
-    document.getElementById("cantidad")?.addEventListener("input", updatePrice); 
-    updatePrice(); 
-  }, []); 
-
-  const handleAddToCart = () => { 
-    const ancho = parseInt(document.getElementById("ancho").value || 0); 
-    const alto = parseInt(document.getElementById("alto").value || 0); 
-    const calibre = parseInt(document.getElementById("calibre").value || 0); 
-    const cantidad = parseInt(document.getElementById("cantidad").value || 0); 
-    const color = document.getElementById("color").value; 
-    const material = document.getElementById("material").value; 
-    const sello = document.getElementById("sello").value; 
-
-    let precio = ancho * alto * calibre * 0.002 * cantidad; 
-    precio = Math.max(precio, 100); 
+  const handleAddToCart = () => {
+    // AGREGADO: Validación para asegurar un mínimo de 100 unidades
+    if (cantidad < 100) {
+      alert("⚠️ La cantidad mínima de producción es de 100 unidades.");
+      return; 
+    }
 
     addToCart({ 
+      id: Date.now(), 
       title: "Funda Personalizada", 
-      details: `Ancho: ${ancho}cm, Alto: ${alto}cm, Calibre: ${calibre}micrones, Cantidad: ${cantidad}, Color: ${color}, Material: ${material}, Sello: ${sello}`, 
-      price: precio 
-    }); 
-  }; 
+      details: `Ancho: ${ancho}cm, Alto: ${alto}cm, Calibre: ${calibre}μ, Cantidad: ${cantidad}, Color: ${color}, Material: ${material}, Sello: ${sello}`, 
+      price: precioEstimado,
+      image: logo || URL_BOLSA 
+    });
+    alert("¡Producto añadido al carrito!");
+  };
 
   return ( 
-    <div className="font-display bg-background-light text-text-light dark:bg-background-dark dark:text-text-dark min-h-screen flex flex-col">
+    <div className="bg-gray-50 min-h-screen p-4 sm:p-8 font-sans text-slate-900">
+      <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
 
+        {/* VISTA PREVIA DINÁMICA - TAMAÑO MAXIMIZADO */}
+        <div className="bg-white rounded-3xl p-6 flex flex-col items-center justify-center shadow-sm border border-gray-100 sticky top-10 min-h-[700px] overflow-hidden">
+          <div 
+            className="relative flex items-center justify-center transition-all duration-300"
+            style={{
+              // MULTIPLICADORES MÁS ALTOS PARA MAYOR TAMAÑO
+              width: `${ancho * 12}px`, 
+              height: `${alto * 12}px`,
+              // LÍMITES AMPLIADOS
+              maxWidth: '95%',
+              maxHeight: '800px', 
+              backgroundColor: coloresMap[color],
+              borderRadius: '1rem',
+              boxShadow: 'inset 0 0 20px rgba(0,0,0,0.05)'
+            }}
+          >
+            {/* LA BOLSA */}
+            <img 
+              src={URL_BOLSA} 
+              alt="Funda" 
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none mix-blend-multiply" 
+              style={{ opacity: color === "Blanco" ? 1 : 0.85 }}
+            />
 
-      {/* ================= MAIN ================= */}
-      <main className="flex-1">
-        <section className="py-12">
-          <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* EL LOGO */}
+            {logo && (
+              <div 
+                className="absolute z-20 flex items-center justify-center transition-all duration-300"
+                style={{
+                  width: `${tamanoLogo}%`,
+                  height: `${tamanoLogo}%`,
+                  top: posicionLogo === 'start' ? '20%' : posicionLogo === 'end' ? '60%' : '40%',
+                }}
+              >
+                <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+              </div>
+            )}
+          </div>
+          <p className="mt-8 text-[10px] font-black text-slate-300 tracking-[0.3em] uppercase">Prototipo de Alta Resolución</p>
+        </div>
 
-            {/* IMAGEN */}
-            <div className="sticky top-24 flex items-center justify-center bg-section-light dark:bg-section-dark rounded-xl p-8 min-h-[500px]">
-              <img
-                src="https://www.matrixcomercial.com/wp-content/uploads/2021/12/Funda-tipo-t-shirt-51.png"
-                alt="Funda personalizada"
-                className="max-w-full max-h-full object-contain"
-              />
+        {/* FORMULARIO */}
+        <div className="space-y-6">
+          <section>
+            <h1 className="text-3xl font-black mb-2 text-slate-900">Configurador de Pedido</h1>
+            <p className="text-slate-500">Personaliza tu funda en tiempo real.</p>
+          </section>
+
+          {/* ARTE E IMPRESIÓN */}
+          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+            <h2 className="font-bold text-sm flex items-center gap-2 text-blue-600">🖼️ Arte e Impresión</h2>
+            <input type="file" accept="image/*" onChange={handleLogoUpload} className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer" />
+            
+            {logo && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-gray-50">
+                <div>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Tamaño: {tamanoLogo}%</label>
+                  <input type="range" min="10" max="65" value={tamanoLogo} onChange={(e)=>setTamanoLogo(Number(e.target.value))} className="w-full h-1.5 bg-gray-100 rounded-lg appearance-none accent-blue-600" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Ubicación</label>
+                  <div className="flex gap-1">
+                    {['start', 'center', 'end'].map((pos) => (
+                      <button key={pos} type="button" onClick={() => setPosicionLogo(pos)} className={`flex-1 py-1 text-[10px] font-bold rounded-lg border transition-all ${posicionLogo === pos ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-gray-100 text-slate-400'}`}>
+                        {pos === 'start' ? 'Arriba' : pos === 'center' ? 'Centro' : 'Abajo'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* DIMENSIONES */}
+          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+            <h2 className="font-bold text-sm text-blue-600">📏 Dimensiones</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ancho (cm)</label>
+                <input type="number" value={ancho} onChange={(e)=>setAncho(Number(e.target.value))} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 font-bold text-slate-700 focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Alto (cm)</label>
+                <input type="number" value={alto} onChange={(e)=>setAlto(Number(e.target.value))} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 font-bold text-slate-700 focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase mb-2">
+                <span>Calibre: {calibre}μ</span>
+              </div>
+              <input type="range" min="20" max="200" value={calibre} onChange={(e)=>setCalibre(Number(e.target.value))} className="w-full h-1.5 bg-gray-100 rounded-lg appearance-none accent-blue-600" />
             </div>
 
-            {/* FORMULARIO */}
-            <div className="space-y-8">
-              <div>
-                <h1 className="text-3xl font-bold text-text-light dark:text-text-dark mb-4">
-                  Personaliza tu Funda
-                </h1>
-                <p className="text-text-light/80 dark:text-text-dark/80">
-                  Crea la funda perfecta para tus necesidades. Ajusta las dimensiones, material y más.
-                </p>
-              </div>
+            {/* AGREGADO: CAMPO DE CANTIDAD */}
+            <div className="pt-2 border-t border-gray-50">
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Cantidad de Unidades</label>
+              <input 
+                type="number" 
+                value={cantidad} 
+                onChange={(e)=>setCantidad(Number(e.target.value))} 
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 font-bold text-slate-700 focus:ring-2 focus:ring-blue-500" 
+                min="100" 
+              />
+            </div>
+          </div>
 
-              {/* DIMENSIONES */}
-              <div className="space-y-6">
-                <h2 className="text-xl font-semibold text-text-light dark:text-text-dark">
-                  Dimensiones
-                </h2>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="ancho" className="block text-sm font-medium text-text-light/80 dark:text-text-dark/80 mb-2">
-                      Ancho (cm)
-                    </label>
-                    <input
-                      type="range"
-                      id="ancho"
-                      min="10"
-                      max="100"
-                      defaultValue="30"
-                      className="w-full h-2 bg-section-light dark:bg-background-dark rounded-lg appearance-none cursor-pointer"
-                    />
-                    <div className="flex justify-between text-xs text-text-light/60 dark:text-text-dark/60 mt-1">
-                      <span>10cm</span>
-                      <span id="ancho-value" className="font-medium">30 cm</span>
-                      <span>100cm</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="alto" className="block text-sm font-medium text-text-light/80 dark:text-text-dark/80 mb-2">
-                      Alto (cm)
-                    </label>
-                    <input
-                      type="range"
-                      id="alto"
-                      min="10"
-                      max="100"
-                      defaultValue="40"
-                      className="w-full h-2 bg-section-light dark:bg-background-dark rounded-lg appearance-none cursor-pointer"
-                    />
-                    <div className="flex justify-between text-xs text-text-light/60 dark:text-text-dark/60 mt-1">
-                      <span>10cm</span>
-                      <span id="alto-value" className="font-medium">40 cm</span>
-                      <span>100cm</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="calibre" className="block text-sm font-medium text-text-light/80 dark:text-text-dark/80 mb-2">
-                    Calibre (micrones)
-                  </label>
-                  <input
-                    type="range"
-                    id="calibre"
-                    min="20"
-                    max="200"
-                    defaultValue="50"
-                    className="w-full h-2 bg-section-light dark:bg-background-dark rounded-lg appearance-none cursor-pointer"
+          {/* ESPECIFICACIONES (COLORES) */}
+          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+            <h2 className="font-bold text-sm text-blue-600">🧪 Especificaciones</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <select value={material} onChange={(e)=>setMaterial(e.target.value)} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-sm font-medium">
+                <option value="Polietileno">Polietileno</option>
+                <option value="Polipropileno">Polipropileno</option>
+              </select>
+              <select value={sello} onChange={(e)=>setSello(e.target.value)} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-sm font-medium">
+                <option value="Lateral">Lateral</option>
+                <option value="Fondo">Fondo</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-3">Color del Plástico</label>
+              <div className="flex justify-between px-2">
+                {Object.keys(coloresMap).map((c) => (
+                  <button 
+                    key={c} 
+                    type="button"
+                    onClick={() => setColor(c)} 
+                    className={`w-10 h-10 rounded-full border-4 transition-all ${color === c ? 'border-blue-600 scale-125 shadow-lg' : 'border-white shadow-sm hover:scale-105'}`} 
+                    style={{ backgroundColor: c === "Transparente" ? "#f1f5f9" : coloresMap[c] }} 
                   />
-                  <div className="flex justify-between text-xs text-text-light/60 dark:text-text-dark/60 mt-1">
-                    <span>20μ</span>
-                    <span id="calibre-value" className="font-medium">50 micrones</span>
-                    <span>200μ</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* CANTIDAD */}
-              <div>
-                <label htmlFor="cantidad" className="block text-sm font-medium text-text-light/80 dark:text-text-dark/80 mb-2">
-                  Cantidad
-                </label>
-                <input
-                  type="number"
-                  id="cantidad"
-                  min="1"
-                  defaultValue="100"
-                  className="w-full bg-section-light dark:bg-background-dark border border-section-light dark:border-section-dark rounded-lg px-4 py-2 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-              </div>
-
-              {/* OPCIONES ADICIONALES */}
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-text-light dark:text-text-dark">
-                  Opciones Adicionales
-                </h2>
-
-                <div>
-                  <label htmlFor="color" className="block text-sm font-medium text-text-light/80 dark:text-text-dark/80 mb-2">
-                    Color
-                  </label>
-                  <select
-                    id="color"
-                    className="w-full bg-section-light dark:bg-background-dark border border-section-light dark:border-section-dark rounded-lg px-4 py-2 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary focus:border-transparent"
-                  >
-                    <option value="Transparente">Transparente</option>
-                    <option value="Blanco">Blanco</option>
-                    <option value="Negro">Negro</option>
-                    <option value="Azul">Azul</option>
-                    <option value="Rojo">Rojo</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="material" className="block text-sm font-medium text-text-light/80 dark:text-text-dark/80 mb-2">
-                    Material
-                  </label>
-                  <select
-                    id="material"
-                    className="w-full bg-section-light dark:bg-background-dark border border-section-light dark:border-section-dark rounded-lg px-4 py-2 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary focus:border-transparent"
-                  >
-                    <option value="Polietileno">Polietileno</option>
-                    <option value="Polipropileno">Polipropileno</option>
-                    <option value="PVC">PVC</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="sello" className="block text-sm font-medium text-text-light/80 dark:text-text-dark/80 mb-2">
-                    Tipo de Sello
-                  </label>
-                  <select
-                    id="sello"
-                    className="w-full bg-section-light dark:bg-background-dark border border-section-light dark:border-section-dark rounded-lg px-4 py-2 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary focus:border-transparent"
-                  >
-                    <option value="Lateral">Lateral</option>
-                    <option value="Fondo">Fondo</option>
-                    <option value="Superior">Superior</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* PRECIO ESTIMADO */}
-              <div className="bg-primary/10 dark:bg-primary/20 p-6 rounded-xl">
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold text-text-light dark:text-text-dark">
-                    Precio Estimado
-                  </span>
-                  <span id="precio-estimado" className="text-2xl font-bold text-primary">
-                    RD$100.00
-                  </span>
-                </div>
-              </div>
-
-              {/* BOTÓN */}
-              <div>
-                <button
-                  onClick={handleAddToCart}
-                  aria-label="Agregar al carrito"
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white py-3 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  <span className="inline-flex items-center justify-center w-9 h-9 bg-white/20 rounded-full">
-                    <svg
-                      className="w-5 h-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l3-6H6.4M7 13l-1.2 4.4A2 2 0 008 20h8a2 2 0 001.8-1.4L19 13" />
-                    </svg>
-                    <span className="sr-only">Carrito</span>
-                  </span>
-                  <span>Agregar al Carrito</span>
-                </button>
+                ))}
               </div>
             </div>
           </div>
-        </section>
-      </main>
 
+          {/* TOTAL Y CARRITO */}
+          <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white flex items-center justify-between shadow-xl">
+            <div>
+              <p className="text-[10px] font-bold text-blue-400 uppercase mb-1">Total (RD$)</p>
+              <h2 className="text-4xl font-black">RD${precioEstimado.toLocaleString()}</h2>
+            </div>
+            <button 
+              type="button"
+              onClick={handleAddToCart}
+              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg"
+            >
+              Confirmar
+            </button>
+          </div>
+        </div>
+      </main>
     </div>
-  ); 
+  );
 }

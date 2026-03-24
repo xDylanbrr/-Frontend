@@ -1,5 +1,5 @@
 // src/services/logistica/empaque.service.js
-const API_URL = 'http://localhost:3000/api/logistica/empaque';
+const API_URL = 'https://backend-m3nj.onrender.com/api/logistica/empaque';
 
 export const getEmpaques = async () => {
     try {

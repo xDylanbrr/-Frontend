@@ -1,5 +1,5 @@
 // src/services/produccion/produccion_pedido.service.js
-const API_URL = 'http://localhost:3000/api/produccion/proceso';
+const API_URL = 'https://backend-m3nj.onrender.com/api/produccion/proceso';
 
 export const obtenerProcesos = async () => {
   try {

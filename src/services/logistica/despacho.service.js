@@ -1,6 +1,6 @@
 // src/services/logistica/despacho.service.js
 // ✅ URL Corregida para que coincida con el backend
-const API_URL = 'http://localhost:3000/api/logistica/despacho'; 
+const API_URL = 'https://backend-m3nj.onrender.com/api/logistica/despacho'; 
 
 export const obtenerDespachos = async () => {
   try {

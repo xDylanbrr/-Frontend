@@ -21,8 +21,8 @@ const PedidoTerminadoForm = ({ onPedidoTerminadoCreado }) => {
     try {
       setCargando(true);
       const [resProcesos, resEmpleados] = await Promise.all([
-        fetch('http://localhost:3000/api/produccion/proceso'), 
-        fetch('http://localhost:3000/api/administracion/empleados')
+        fetch('https://backend-m3nj.onrender.com/api/produccion/proceso'), 
+        fetch('https://backend-m3nj.onrender.com/api/administracion/empleados')
       ]);
 
       if (resProcesos.ok && resEmpleados.ok) {

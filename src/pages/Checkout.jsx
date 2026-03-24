@@ -355,7 +355,7 @@ export default function Checkout() {
     }
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/pedidos', {
+      const response = await fetch('https://backend-m3nj.onrender.com/api/pedidos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_cliente: idFinal, total, items: cart, estado: "Pendiente" })

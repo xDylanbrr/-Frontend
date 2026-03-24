@@ -98,7 +98,7 @@ export default function PerfilUsuario({ user, onUserUpdate }) {
     const imagenFirma = sigCanvas.current.getCanvas().toDataURL('image/png');
     setIsSavingSignature(true);
     try {
-      const response = await fetch("http://localhost:3000/api/auth/perfil/firma", {
+      const response = await fetch("https://backend-m3nj.onrender.com/api/auth/perfil/firma", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: idParaEnvio, firma: imagenFirma }),
@@ -154,7 +154,7 @@ export default function PerfilUsuario({ user, onUserUpdate }) {
     formData.append('imagenPerfil', selectedFile);
     formData.append('userId', idParaEnvio);
     try {
-      const response = await fetch("http://localhost:3000/api/auth/perfil/imagen", {
+      const response = await fetch("https://backend-m3nj.onrender.com/api/auth/perfil/imagen", {
         method: "PATCH",
         body: formData,
       });
@@ -173,7 +173,7 @@ export default function PerfilUsuario({ user, onUserUpdate }) {
   };
 
   const profileImage = user?.imagen_perfil
-    ? `http://localhost:3000/uploads/perfiles/${user.imagen_perfil}`
+    ? `https://backend-m3nj.onrender.com/uploads/perfiles/${user.imagen_perfil}`
     : `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.nombre || 'U')}&background=111827&color=fff&bold=true&size=200`;
 
   const tabs = [

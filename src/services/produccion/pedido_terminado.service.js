@@ -1,5 +1,5 @@
 // src/services/produccion/pedido_terminado.service.js
-const API_URL = 'http://localhost:3000/api/produccion/terminado';
+const API_URL = 'https://backend-m3nj.onrender.com/api/produccion/terminado';
 
 export const obtenerPedidosTerminados = async () => {
   try {

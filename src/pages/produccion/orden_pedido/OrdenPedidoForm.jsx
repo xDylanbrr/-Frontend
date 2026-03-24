@@ -21,8 +21,8 @@ const OrdenPedidoForm = ({ onOrdenCreada }) => {
   const cargarDatosDesplegables = async () => {
     try {
       const [resPedidos, resEmpleados] = await Promise.all([
-        fetch('http://localhost:3000/api/pedidos'),
-        fetch('http://localhost:3000/api/administracion/empleados')
+        fetch('https://backend-m3nj.onrender.com/api/pedidos'),
+        fetch('https://backend-m3nj.onrender.com/api/administracion/empleados')
       ]);
 
       if (resPedidos.ok && resEmpleados.ok) {

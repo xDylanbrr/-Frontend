@@ -273,7 +273,7 @@ export default function CompradorLogin() {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/api/auth/comprador-login", {
+      const response = await fetch("https://backend-m3nj.onrender.com/api/auth/comprador-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cedula, password }),

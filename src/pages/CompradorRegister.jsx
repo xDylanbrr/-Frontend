@@ -65,7 +65,7 @@ export default function CompradorRegister() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/api/auth/comprador-register", {
+      const response = await fetch("https://backend-m3nj.onrender.com/api/auth/comprador-register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

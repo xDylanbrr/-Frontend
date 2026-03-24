@@ -1,6 +1,6 @@
 // src/services/logistica/transporte.service.js
 
-const API_URL = "http://localhost:3000/api/logistica/transporte";
+const API_URL = "https://backend-m3nj.onrender.com/api/logistica/transporte";
 
 // Función para traer la lista de transportes (GET)
 export const obtenerTransportes = async () => {

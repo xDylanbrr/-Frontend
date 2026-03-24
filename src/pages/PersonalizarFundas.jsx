@@ -1,8 +1,243 @@
-import React, { useState } from 'react'; 
-import { useCart } from '../components/CartContext'; 
+import React, { useState } from 'react';
+import { useCart } from '../components/CartContext';
 
-export default function PersonalizarFundas() { 
-  const { addToCart } = useCart(); 
+const css = `
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+  .pf-root {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .pf-hero {
+    background: #1B3A5C;
+    padding: 48px 40px 56px;
+    position: relative; overflow: hidden;
+  }
+  .pf-hero::before {
+    content: ''; position: absolute;
+    top: -80px; right: -80px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .pf-hero::after {
+    content: ''; position: absolute;
+    bottom: -60px; left: -60px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .pf-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.45);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;
+  }
+  .pf-hero-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #4ade80;
+    animation: pfPulse 2s ease infinite;
+  }
+  @keyframes pfPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .pf-hero-title {
+    font-size: 38px; font-weight: 800; color: white;
+    letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 10px;
+    position: relative; z-index: 1;
+  }
+  .pf-hero-title span { color: #E63946; }
+  .pf-hero-sub {
+    font-size: 14px; color: rgba(255,255,255,0.4);
+    font-weight: 400; position: relative; z-index: 1;
+  }
+
+  /* MAIN LAYOUT */
+  .pf-main {
+    max-width: 1200px; margin: 0 auto;
+    padding: 40px 40px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* PREVIEW PANEL */
+  .pf-preview {
+    background: white;
+    border-radius: 24px;
+    border: 1px solid rgba(27,58,92,0.06);
+    box-shadow: 0 4px 20px rgba(27,58,92,0.06);
+    padding: 32px 24px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: sticky; top: 24px;
+    min-height: 520px;
+  }
+  .pf-preview-label {
+    font-size: 9px; font-weight: 800; color: #cbd5e1;
+    text-transform: uppercase; letter-spacing: 0.25em;
+    margin-top: 24px;
+  }
+
+  /* FORM PANEL */
+  .pf-form { display: flex; flex-direction: column; gap: 16px; }
+
+  /* SECTION CARD */
+  .pf-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(27,58,92,0.06);
+    box-shadow: 0 4px 16px rgba(27,58,92,0.04);
+    padding: 22px 24px;
+  }
+  .pf-card-title {
+    font-size: 11px; font-weight: 800; color: #1B3A5C;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .pf-card-title-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #E63946; flex-shrink: 0;
+  }
+
+  /* INPUTS */
+  .pf-label {
+    display: block; font-size: 10px; font-weight: 700;
+    color: #94a3b8; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 8px;
+  }
+  .pf-input {
+    width: 100%; padding: 11px 14px;
+    background: #f8fafc; border: 1.5px solid #e2e8f0;
+    border-radius: 12px; font-size: 14px; font-weight: 600;
+    color: #111827; font-family: 'Plus Jakarta Sans', sans-serif;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+  .pf-input:focus {
+    border-color: #1B3A5C;
+    box-shadow: 0 0 0 3px rgba(27,58,92,0.08);
+  }
+  .pf-select {
+    width: 100%; padding: 11px 14px;
+    background: #f8fafc; border: 1.5px solid #e2e8f0;
+    border-radius: 12px; font-size: 13px; font-weight: 600;
+    color: #111827; font-family: 'Plus Jakarta Sans', sans-serif;
+    outline: none; cursor: pointer;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .pf-select:focus { border-color: #1B3A5C; }
+
+  /* RANGE SLIDER */
+  .pf-range {
+    width: 100%; height: 4px;
+    background: #e2e8f0; border-radius: 2px;
+    appearance: none; cursor: pointer; margin-top: 8px;
+  }
+  .pf-range::-webkit-slider-thumb {
+    appearance: none; width: 18px; height: 18px;
+    background: #1B3A5C; border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(27,58,92,0.3);
+    cursor: pointer;
+  }
+
+  /* COLOR SWATCHES */
+  .pf-colors { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .pf-color-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .pf-color-btn:hover { transform: scale(1.1); }
+  .pf-color-btn.active {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px #1B3A5C, 0 4px 12px rgba(27,58,92,0.25);
+  }
+  .pf-color-label {
+    font-size: 10px; color: #94a3b8; font-weight: 600; margin-top: 6px;
+    text-align: center;
+  }
+
+  /* LOGO POSITION BTNS */
+  .pf-pos-btn {
+    flex: 1; padding: 8px 4px; text-align: center;
+    font-size: 11px; font-weight: 700;
+    border-radius: 10px; border: 1.5px solid #e2e8f0;
+    cursor: pointer; background: #f8fafc; color: #94a3b8;
+    transition: all 0.15s; font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .pf-pos-btn.active {
+    border-color: #1B3A5C; background: #eff6ff; color: #1B3A5C;
+  }
+
+  /* FILE INPUT */
+  .pf-file-wrap {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: #f8fafc; border: 1.5px dashed #e2e8f0;
+    border-radius: 12px; cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .pf-file-wrap:hover { border-color: #1B3A5C; }
+  .pf-file-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: #e0e7ff; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .pf-file-text { font-size: 12px; font-weight: 600; color: #475569; }
+  .pf-file-sub { font-size: 10px; color: #94a3b8; margin-top: 1px; }
+
+  /* TOTAL BAR */
+  .pf-total {
+    background: #1B3A5C;
+    border-radius: 20px; padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 8px 32px rgba(27,58,92,0.25);
+    position: relative; overflow: hidden;
+  }
+  .pf-total::before {
+    content: ''; position: absolute;
+    top: -30px; right: -30px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: rgba(230,57,70,0.15);
+  }
+  .pf-total-label {
+    font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.4);
+    text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 4px;
+  }
+  .pf-total-price {
+    font-size: 32px; font-weight: 800; color: white; line-height: 1;
+  }
+  .pf-confirm-btn {
+    background: #E63946; color: white;
+    padding: 14px 28px; border-radius: 14px;
+    font-size: 14px; font-weight: 800;
+    border: none; cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 16px rgba(230,57,70,0.35);
+    position: relative; z-index: 1;
+    white-space: nowrap;
+  }
+  .pf-confirm-btn:hover { background: #c1121f; transform: translateY(-1px); }
+
+  @media (max-width: 900px) {
+    .pf-main { grid-template-columns: 1fr; padding: 24px 20px 48px; }
+    .pf-preview { position: static; min-height: 360px; }
+    .pf-hero { padding: 40px 20px 48px; }
+    .pf-hero-title { font-size: 28px; }
+  }
+`;
+
+export default function PersonalizarFundas() {
+  const { addToCart } = useCart();
 
   const [ancho, setAncho] = useState(30);
   const [alto, setAlto] = useState(40);
@@ -11,22 +246,24 @@ export default function PersonalizarFundas() {
   const [color, setColor] = useState("Blanco");
   const [material, setMaterial] = useState("Polietileno");
   const [sello, setSello] = useState("Lateral");
-  
   const [logo, setLogo] = useState(null);
-  const [posicionLogo, setPosicionLogo] = useState("center"); 
+  const [posicionLogo, setPosicionLogo] = useState("center");
   const [tamanoLogo, setTamanoLogo] = useState(30);
 
   const URL_BOLSA = "https://www.matrixcomercial.com/wp-content/uploads/2021/12/Funda-tipo-t-shirt-51.png";
 
   const coloresMap = {
-    "Transparente": "rgba(200, 225, 255, 0.4)",
+    "Transparente": "rgba(200,225,255,0.4)",
     "Blanco": "#ffffff",
-    "Negro": "#333333", 
-    "Azul": "#2563eb",
-    "Rojo": "#dc2626"
+    "Negro": "#1e293b",
+    "Azul": "#1B3A5C",
+    "Rojo": "#E63946"
   };
 
-  const precioEstimado = Math.max(ancho * alto * calibre * 0.002 * parseInt(cantidad || 0), 100);
+  const precioEstimado = Math.max(
+    ancho * alto * calibre * 0.002 * parseInt(cantidad || 0),
+    100
+  );
 
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
@@ -34,178 +271,251 @@ export default function PersonalizarFundas() {
   };
 
   const handleAddToCart = () => {
-    // AGREGADO: Validación para asegurar un mínimo de 100 unidades
     if (cantidad < 100) {
       alert("⚠️ La cantidad mínima de producción es de 100 unidades.");
-      return; 
+      return;
     }
-
-    addToCart({ 
-      id: Date.now(), 
-      title: "Funda Personalizada", 
-      details: `Ancho: ${ancho}cm, Alto: ${alto}cm, Calibre: ${calibre}μ, Cantidad: ${cantidad}, Color: ${color}, Material: ${material}, Sello: ${sello}`, 
+    addToCart({
+      id: Date.now(),
+      title: "Funda Personalizada",
+      details: `Ancho: ${ancho}cm, Alto: ${alto}cm, Calibre: ${calibre}μ, Cantidad: ${cantidad}, Color: ${color}, Material: ${material}, Sello: ${sello}`,
       price: precioEstimado,
-      image: logo || URL_BOLSA 
+      image: logo || URL_BOLSA
     });
     alert("¡Producto añadido al carrito!");
   };
 
-  return ( 
-    <div className="bg-gray-50 min-h-screen p-4 sm:p-8 font-sans text-slate-900">
-      <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+  return (
+    <>
+      <style>{css}</style>
+      <div className="pf-root">
 
-        {/* VISTA PREVIA DINÁMICA - TAMAÑO MAXIMIZADO */}
-        <div className="bg-white rounded-3xl p-6 flex flex-col items-center justify-center shadow-sm border border-gray-100 sticky top-10 min-h-[700px] overflow-hidden">
-          <div 
-            className="relative flex items-center justify-center transition-all duration-300"
-            style={{
-              // MULTIPLICADORES MÁS ALTOS PARA MAYOR TAMAÑO
-              width: `${ancho * 12}px`, 
-              height: `${alto * 12}px`,
-              // LÍMITES AMPLIADOS
-              maxWidth: '95%',
-              maxHeight: '800px', 
-              backgroundColor: coloresMap[color],
-              borderRadius: '1rem',
-              boxShadow: 'inset 0 0 20px rgba(0,0,0,0.05)'
-            }}
-          >
-            {/* LA BOLSA */}
-            <img 
-              src={URL_BOLSA} 
-              alt="Funda" 
-              className="absolute inset-0 w-full h-full object-contain pointer-events-none mix-blend-multiply" 
-              style={{ opacity: color === "Blanco" ? 1 : 0.85 }}
-            />
-
-            {/* EL LOGO */}
-            {logo && (
-              <div 
-                className="absolute z-20 flex items-center justify-center transition-all duration-300"
-                style={{
-                  width: `${tamanoLogo}%`,
-                  height: `${tamanoLogo}%`,
-                  top: posicionLogo === 'start' ? '20%' : posicionLogo === 'end' ? '60%' : '40%',
-                }}
-              >
-                <img src={logo} alt="Logo" className="w-full h-full object-contain" />
-              </div>
-            )}
+        {/* ── HERO ── */}
+        <div className="pf-hero">
+          <div className="pf-hero-eyebrow">
+            <div className="pf-hero-dot" />
+            Configurador en tiempo real
           </div>
-          <p className="mt-8 text-[10px] font-black text-slate-300 tracking-[0.3em] uppercase">Prototipo de Alta Resolución</p>
+          <h1 className="pf-hero-title">
+            Personaliza tu <span>Funda</span>
+          </h1>
+          <p className="pf-hero-sub">
+            Ajusta cada detalle y visualiza tu empaque al instante.
+          </p>
         </div>
 
-        {/* FORMULARIO */}
-        <div className="space-y-6">
-          <section>
-            <h1 className="text-3xl font-black mb-2 text-slate-900">Configurador de Pedido</h1>
-            <p className="text-slate-500">Personaliza tu funda en tiempo real.</p>
-          </section>
+        <div className="pf-main">
 
-          {/* ARTE E IMPRESIÓN */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-            <h2 className="font-bold text-sm flex items-center gap-2 text-blue-600">🖼️ Arte e Impresión</h2>
-            <input type="file" accept="image/*" onChange={handleLogoUpload} className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer" />
-            
-            {logo && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-gray-50">
-                <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase">Tamaño: {tamanoLogo}%</label>
-                  <input type="range" min="10" max="65" value={tamanoLogo} onChange={(e)=>setTamanoLogo(Number(e.target.value))} className="w-full h-1.5 bg-gray-100 rounded-lg appearance-none accent-blue-600" />
+          {/* ── PREVIEW ── */}
+          <div className="pf-preview">
+            <div
+              style={{
+                width: `${Math.min(ancho * 10, 340)}px`,
+                height: `${Math.min(alto * 10, 440)}px`,
+                maxWidth: '100%',
+                backgroundColor: coloresMap[color],
+                borderRadius: 16,
+                position: 'relative',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: 'inset 0 0 24px rgba(0,0,0,0.06)',
+                border: color === 'Blanco' ? '1px solid #e2e8f0' : 'none',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <img
+                src={URL_BOLSA}
+                alt="Funda"
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  objectFit: 'contain',
+                  mixBlendMode: 'multiply',
+                  opacity: color === 'Blanco' ? 1 : 0.85,
+                  pointerEvents: 'none'
+                }}
+              />
+              {logo && (
+                <div style={{
+                  position: 'absolute', zIndex: 20,
+                  width: `${tamanoLogo}%`, height: `${tamanoLogo}%`,
+                  top: posicionLogo === 'start' ? '18%' : posicionLogo === 'end' ? '60%' : '38%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.3s'
+                }}>
+                  <img src={logo} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
-                <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase">Ubicación</label>
-                  <div className="flex gap-1">
-                    {['start', 'center', 'end'].map((pos) => (
-                      <button key={pos} type="button" onClick={() => setPosicionLogo(pos)} className={`flex-1 py-1 text-[10px] font-bold rounded-lg border transition-all ${posicionLogo === pos ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-gray-100 text-slate-400'}`}>
-                        {pos === 'start' ? 'Arriba' : pos === 'center' ? 'Centro' : 'Abajo'}
-                      </button>
-                    ))}
+              )}
+            </div>
+            <p className="pf-preview-label">Prototipo de Alta Resolución</p>
+          </div>
+
+          {/* ── FORM ── */}
+          <div className="pf-form">
+
+            {/* ARTE E IMPRESIÓN */}
+            <div className="pf-card">
+              <div className="pf-card-title">
+                <div className="pf-card-title-dot" />
+                Arte e Impresión
+              </div>
+
+              <label htmlFor="pf-logo-input" style={{ cursor: 'pointer' }}>
+                <div className="pf-file-wrap">
+                  <div className="pf-file-icon">🖼️</div>
+                  <div>
+                    <div className="pf-file-text">{logo ? 'Cambiar logo' : 'Subir logo o arte'}</div>
+                    <div className="pf-file-sub">PNG, JPG, SVG recomendado</div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
+                <input
+                  id="pf-logo-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                  style={{ display: 'none' }}
+                />
+              </label>
 
-          {/* DIMENSIONES */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-6">
-            <h2 className="font-bold text-sm text-blue-600">📏 Dimensiones</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ancho (cm)</label>
-                <input type="number" value={ancho} onChange={(e)=>setAncho(Number(e.target.value))} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 font-bold text-slate-700 focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Alto (cm)</label>
-                <input type="number" value={alto} onChange={(e)=>setAlto(Number(e.target.value))} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 font-bold text-slate-700 focus:ring-2 focus:ring-blue-500" />
-              </div>
-            </div>
-            <div>
-              <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase mb-2">
-                <span>Calibre: {calibre}μ</span>
-              </div>
-              <input type="range" min="20" max="200" value={calibre} onChange={(e)=>setCalibre(Number(e.target.value))} className="w-full h-1.5 bg-gray-100 rounded-lg appearance-none accent-blue-600" />
+              {logo && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16, paddingTop: 16, borderTop: '1px solid #f1f5f9' }}>
+                  <div>
+                    <label className="pf-label">Tamaño del logo: {tamanoLogo}%</label>
+                    <input
+                      type="range" min="10" max="65" value={tamanoLogo}
+                      onChange={(e) => setTamanoLogo(Number(e.target.value))}
+                      className="pf-range"
+                    />
+                  </div>
+                  <div>
+                    <label className="pf-label">Posición</label>
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      {[
+                        { val: 'start', label: 'Arriba' },
+                        { val: 'center', label: 'Centro' },
+                        { val: 'end', label: 'Abajo' },
+                      ].map(({ val, label }) => (
+                        <button
+                          key={val} type="button"
+                          onClick={() => setPosicionLogo(val)}
+                          className={`pf-pos-btn${posicionLogo === val ? ' active' : ''}`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* AGREGADO: CAMPO DE CANTIDAD */}
-            <div className="pt-2 border-t border-gray-50">
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Cantidad de Unidades</label>
-              <input 
-                type="number" 
-                value={cantidad} 
-                onChange={(e)=>setCantidad(Number(e.target.value))} 
-                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 font-bold text-slate-700 focus:ring-2 focus:ring-blue-500" 
-                min="100" 
-              />
-            </div>
-          </div>
+            {/* DIMENSIONES */}
+            <div className="pf-card">
+              <div className="pf-card-title">
+                <div className="pf-card-title-dot" />
+                Dimensiones
+              </div>
 
-          {/* ESPECIFICACIONES (COLORES) */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-            <h2 className="font-bold text-sm text-blue-600">🧪 Especificaciones</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <select value={material} onChange={(e)=>setMaterial(e.target.value)} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-sm font-medium">
-                <option value="Polietileno">Polietileno</option>
-                <option value="Polipropileno">Polipropileno</option>
-              </select>
-              <select value={sello} onChange={(e)=>setSello(e.target.value)} className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-sm font-medium">
-                <option value="Lateral">Lateral</option>
-                <option value="Fondo">Fondo</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-3">Color del Plástico</label>
-              <div className="flex justify-between px-2">
-                {Object.keys(coloresMap).map((c) => (
-                  <button 
-                    key={c} 
-                    type="button"
-                    onClick={() => setColor(c)} 
-                    className={`w-10 h-10 rounded-full border-4 transition-all ${color === c ? 'border-blue-600 scale-125 shadow-lg' : 'border-white shadow-sm hover:scale-105'}`} 
-                    style={{ backgroundColor: c === "Transparente" ? "#f1f5f9" : coloresMap[c] }} 
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+                <div>
+                  <label className="pf-label">Ancho (cm)</label>
+                  <input
+                    type="number" value={ancho}
+                    onChange={(e) => setAncho(Number(e.target.value))}
+                    className="pf-input"
                   />
-                ))}
+                </div>
+                <div>
+                  <label className="pf-label">Alto (cm)</label>
+                  <input
+                    type="number" value={alto}
+                    onChange={(e) => setAlto(Number(e.target.value))}
+                    className="pf-input"
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <label className="pf-label">Calibre</label>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#1B3A5C' }}>{calibre}μ</span>
+                </div>
+                <input
+                  type="range" min="20" max="200" value={calibre}
+                  onChange={(e) => setCalibre(Number(e.target.value))}
+                  className="pf-range"
+                />
+              </div>
+
+              <div style={{ paddingTop: 16, borderTop: '1px solid #f1f5f9' }}>
+                <label className="pf-label">Cantidad de unidades <span style={{ color: '#E63946' }}>(mín. 100)</span></label>
+                <input
+                  type="number" value={cantidad} min="100"
+                  onChange={(e) => setCantidad(Number(e.target.value))}
+                  className="pf-input"
+                />
               </div>
             </div>
-          </div>
 
-          {/* TOTAL Y CARRITO */}
-          <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white flex items-center justify-between shadow-xl">
-            <div>
-              <p className="text-[10px] font-bold text-blue-400 uppercase mb-1">Total (RD$)</p>
-              <h2 className="text-4xl font-black">RD${precioEstimado.toLocaleString()}</h2>
+            {/* ESPECIFICACIONES */}
+            <div className="pf-card">
+              <div className="pf-card-title">
+                <div className="pf-card-title-dot" />
+                Especificaciones
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+                <div>
+                  <label className="pf-label">Material</label>
+                  <select value={material} onChange={(e) => setMaterial(e.target.value)} className="pf-select">
+                    <option value="Polietileno">Polietileno</option>
+                    <option value="Polipropileno">Polipropileno</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="pf-label">Tipo de sello</label>
+                  <select value={sello} onChange={(e) => setSello(e.target.value)} className="pf-select">
+                    <option value="Lateral">Lateral</option>
+                    <option value="Fondo">Fondo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="pf-label" style={{ marginBottom: 14 }}>Color del plástico</label>
+                <div className="pf-colors">
+                  {Object.entries(coloresMap).map(([nombre, hex]) => (
+                    <div key={nombre} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <button
+                        type="button"
+                        onClick={() => setColor(nombre)}
+                        className={`pf-color-btn${color === nombre ? ' active' : ''}`}
+                        style={{
+                          backgroundColor: nombre === 'Transparente' ? '#f1f5f9' : hex,
+                          border: nombre === 'Blanco' ? '1.5px solid #e2e8f0' : 'none'
+                        }}
+                        title={nombre}
+                      />
+                      <span className="pf-color-label">{nombre}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-            <button 
-              type="button"
-              onClick={handleAddToCart}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg"
-            >
-              Confirmar
-            </button>
+
+            {/* TOTAL */}
+            <div className="pf-total">
+              <div>
+                <div className="pf-total-label">Total estimado (RD$)</div>
+                <div className="pf-total-price">RD${precioEstimado.toLocaleString()}</div>
+              </div>
+              <button type="button" className="pf-confirm-btn" onClick={handleAddToCart}>
+                Añadir al carrito
+              </button>
+            </div>
+
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 }

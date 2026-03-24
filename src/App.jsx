@@ -30,6 +30,20 @@ import CompradorRegister from "./pages/CompradorRegister";
 import DepartamentosPage from "./pages/administracion/departamentos/DepartamentosPage";
 import EmpleadosPage from "./pages/administracion/empleados/EmpleadosPage";
 
+// =======================
+// LOGÍSTICA 🚚
+// =======================
+import TransportePage from "./pages/logistica/transporte/TransportePage";
+import EmpaquePage from "./pages/logistica/empaque/EmpaquePage";
+import DespachoPage from "./pages/logistica/despacho/DespachoPage";
+
+// =======================
+// PRODUCCIÓN 🏭
+// =======================
+import OrdenPedidoPage from "./pages/produccion/orden_pedido/OrdenPedidoPage";
+import ProduccionPedidoPage from "./pages/produccion/produccion_pedido/ProduccionPedidoPage";
+import PedidoTerminadoPage from "./pages/produccion/pedido_terminado/PedidoTerminadoPage"; // ✅ NUEVA IMPORTACIÓN
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -63,7 +77,10 @@ function App() {
         {/* 🔐 RUTAS SIN LAYOUT */}
         <Route path="/login-gtg" element={<LoginIndex />} />
         <Route path="/comprador-login" element={<CompradorLogin />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
+        
+        {/* ✅ MODIFICACIÓN AQUÍ: Pasamos setUser para que el Header cambie tras el login */}
+        <Route path="/admin-login" element={<AdminLogin setUser={setUser} />} />
+        
         <Route path="/comprador-register" element={<CompradorRegister />} />
 
         {/* 🌐 RUTAS CON LAYOUT: Pasamos user y setUser como props */}
@@ -79,7 +96,7 @@ function App() {
           <Route 
             path="/perfil" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute user={user}>
                 <PerfilUsuario user={user?.data} onUserUpdate={handleUserUpdate} />
               </ProtectedRoute>
             } 
@@ -89,7 +106,7 @@ function App() {
           <Route 
             path="/checkout" 
             element={
-              <ProtectedRoute role="comprador">
+              <ProtectedRoute user={user} role="comprador">
                 <Checkout />
               </ProtectedRoute>
             } 
@@ -105,7 +122,7 @@ function App() {
           <Route
             path="/administracion/departamentos"
             element={
-              <ProtectedRoute role="admin">
+              <ProtectedRoute user={user} role="admin">
                 <DepartamentosPage />
               </ProtectedRoute>
             }
@@ -113,8 +130,63 @@ function App() {
           <Route
             path="/administracion/empleados"
             element={
-              <ProtectedRoute role="admin">
+              <ProtectedRoute user={user} role="admin">
                 <EmpleadosPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 🚚 LOGÍSTICA */}
+          <Route
+            path="/logistica/transporte"
+            element={
+              <ProtectedRoute user={user} role="admin">
+                <TransportePage />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/logistica/empaque"
+            element={
+              <ProtectedRoute user={user} role="admin">
+                <EmpaquePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/logistica/despacho"
+            element={
+              <ProtectedRoute user={user} role="admin">
+                <DespachoPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 🏭 PRODUCCIÓN */}
+          <Route
+            path="/produccion/orden-pedido"
+            element={
+              <ProtectedRoute user={user} role="admin">
+                <OrdenPedidoPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/produccion/proceso"
+            element={
+              <ProtectedRoute user={user} role="admin">
+                <ProduccionPedidoPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* ✅ NUEVO: RUTA DE PEDIDO TERMINADO */}
+          <Route
+            path="/produccion/terminado"
+            element={
+              <ProtectedRoute user={user} role="admin">
+                <PedidoTerminadoPage />
               </ProtectedRoute>
             }
           />

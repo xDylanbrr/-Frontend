@@ -10,8 +10,8 @@ jobs:
 
     defaults:
       run:
-       
-        working-directory: ./Frontend
+  
+        working-directory: ./src
 
     steps:
       - name: 1. Clonar repositorio

@@ -8,10 +8,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./src
-
     steps:
       - name: 1. Clonar repositorio
         uses: actions/checkout@v4
@@ -21,12 +17,12 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: './src/package-lock.json'
 
       - name: 3. Instalar dependencias
-        run: npm install  
+        
+        run: npm install
 
-      - name: 4. Build del Proyecto (vía NPM)
+      - name: 4. Build del Proyecto
         run: npm run build
 
       - name: 5. Deploy Directo a Vercel

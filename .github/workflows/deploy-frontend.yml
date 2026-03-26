@@ -12,20 +12,7 @@ jobs:
       - name: 1. Clonar repositorio
         uses: actions/checkout@v4
 
-      - name: 2. Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: 3. Instalar dependencias
-        
-        run: npm install
-
-      - name: 4. Build del Proyecto
-        run: npm run build
-
-      - name: 5. Deploy Directo a Vercel
+      - name: 2. Deploy a Vercel
         run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

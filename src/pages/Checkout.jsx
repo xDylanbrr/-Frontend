@@ -100,7 +100,6 @@ const css = `
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-  .ck-info-item {}
   .ck-info-label {
     font-size: 10px; font-weight: 800; color: #94a3b8;
     text-transform: uppercase; letter-spacing: 0.1em;
@@ -355,18 +354,28 @@ export default function Checkout() {
     }
     setLoading(true);
     try {
-      const response = await fetch('https://backend-m3nj.onrender.com/api/pedidos', {
+      // ✅ CAMBIO: Usamos la variable de entorno de Vite para la URL de Render
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://backend-m3nj.onrender.com';
+
+      const response = await fetch(`${baseUrl}/api/pedidos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_cliente: idFinal, total, items: cart, estado: "Pendiente" })
+        body: JSON.stringify({ 
+          id_cliente: idFinal, 
+          total, 
+          items: cart, 
+          estado: "Pendiente" 
+        })
       });
+
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || result.message || "Error en el servidor");
+      
       generarPDF(result.id_pedido_cliente || result.id, datosCliente, cart);
       setSuccess(true);
       setTimeout(() => { clearCart(); localStorage.removeItem('datosEnvio'); navigate('/'); }, 3500);
     } catch (error) {
-      alert(error.message);
+      alert("Error: " + error.message);
       setLoading(false);
     }
   };

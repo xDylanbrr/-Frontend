@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 const GestionIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>;
 const LogisticaIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>;
@@ -31,6 +32,8 @@ export default function Header({ user, setUser }) {
   const navigate  = useNavigate();
   const location  = useLocation();
   const [adminOpen, setAdminOpen] = useState(false);
+  const { cart } = useCart();
+  const cartCount = cart.reduce((sum, item) => sum + item.cantidad, 0);
 
   const handleLogout = () => {
     localStorage.removeItem("comprador");
@@ -203,6 +206,34 @@ export default function Header({ user, setUser }) {
         }
         .gtg-login:hover { background: #c62b39; transform: scale(1.03); }
 
+        /* ── cart icon ── */
+        .gtg-cart-link {
+          position: relative;
+          text-decoration: none;
+          display: flex; align-items: center; justify-content: center;
+          width: 38px; height: 38px;
+          border-radius: 10px;
+          color: rgba(232,240,248,0.65);
+          transition: color .2s, background .2s;
+        }
+        .gtg-cart-link:hover { color: #E8F0F8; background: rgba(255,255,255,0.1); }
+        .gtg-cart-link.active { color: #E8F0F8; background: rgba(255,255,255,0.12); }
+        .gtg-cart-badge {
+          position: absolute; top: 2px; right: 1px;
+          min-width: 16px; height: 16px;
+          background: #E63946; color: #fff;
+          font-size: 9px; font-weight: 800;
+          border-radius: 8px;
+          display: flex; align-items: center; justify-content: center;
+          padding: 0 4px;
+          line-height: 1;
+          border: 2px solid #1B3A5C;
+          animation: cartBadgePop .25s ease;
+        }
+        @keyframes cartBadgePop {
+          from { transform: scale(0); } to { transform: scale(1); }
+        }
+
         /* ── overlay ── */
         .gtg-overlay {
           position: fixed; inset: 0; z-index: 99;
@@ -268,6 +299,21 @@ export default function Header({ user, setUser }) {
               </div>
             </>
           )}
+
+          {/* Cart icon */}
+          <Link
+            to="/carrito"
+            className={`gtg-cart-link${isActive("/carrito") ? " active" : ""}`}
+            title="Carrito"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            {cartCount > 0 && (
+              <span className="gtg-cart-badge">{cartCount}</span>
+            )}
+          </Link>
 
           {/* Right — user / login */}
           <div className="gtg-right">

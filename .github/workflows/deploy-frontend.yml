@@ -10,7 +10,6 @@ jobs:
 
     defaults:
       run:
-  
         working-directory: ./src
 
     steps:
@@ -25,11 +24,15 @@ jobs:
       - name: 3. Instalar dependencias
         run: npm ci
 
-      - name: 4. Build del proyecto
-        run: npm run build
-
-      - name: 5. Pull Vercel config
+      - name: 4. Pull Vercel config
         run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: 5. Vercel Build (Genera el prebuilt)
+        
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

@@ -35,10 +35,6 @@ export default function Home() {
                 necesidades de su negocio.
               </p>
             </div>
-
-            <button className="h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white font-black text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(59,130,246,0.8)] hover:shadow-blue-500/50 hover:scale-110 hover:-translate-y-1 transition-all duration-300 border-2 border-blue-400/30 animate-pulse" onClick={() => navigate("/login-gtg")}>
-              Regístrate
-            </button>
           </div>
         </div>
       </section>
@@ -53,9 +49,9 @@ export default function Home() {
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {[
         {
-          title: "Bolsas",
+          title: "Bolsas y Rollos Pigmentados",
           desc: "Soluciones versátiles para todo tipo de productos, desde alimentos hasta industriales.",
-          img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAKAwh_Jr-v5lPMOEBc2WBoLIJlaKN8IAndkt6FoJzLrKWX_oL_2Yb0znOYwNnNHhNVXNA-LlR8eTDIeK6aWp9mkZtOoYW8kmTr-NpZq0IQcKUBboWUJK_sqVrnYcxGQa3pp4kBSxfodc4yRmLsuKJTOkho1zNdwkOfXIYa6y_-x26J-ALPu0wkVpA0P857ni3PVm-ieuwwtiLUQrjYXCAfWFI7hxGDvWOX3WjjO-FG7XvGICmoEexPACVvgDB6Wu2g-ilyeq2Efi0R",
+          img: "https://www.gtg.com.do/media/design/PIGMENTADO-01-min.webp",
         },
         {
           title: "Films",

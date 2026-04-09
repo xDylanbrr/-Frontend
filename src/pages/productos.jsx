@@ -15,7 +15,7 @@ export const productosData = [
     title: "Rollos de Plástico Termoencogible",
     price: 2500.00,
     tag: "Industrial",
-    img: "https://www.novamart.com/shop/image/cachewebp/catalog/Material/Termoencogible/POF/POF-16/01-400x300.webp",
+    img: "https://www.gtg.com.do/media/design/termoencogible-01-min.webp",
     desc: "Película de polietileno de alto rendimiento que se adapta a la forma de su producto mediante calor.",
   },
   {
@@ -23,7 +23,7 @@ export const productosData = [
     title: "Empaques con Impresión Personalizada",
     price: 900.00,
     tag: "Branding",
-    img: "https://agenciapalmlopez.com/cdn/shop/products/BO-BLAN9-5_473x293.jpg?v=1652145634",
+    img: "https://www.gtg.com.do/media/design/Flat_bag_making_machine_4a-01.webp",
     desc: "Soluciones completas de empaque con diseño flexográfico personalizado para resaltar su marca.",
   },
   {
@@ -31,7 +31,7 @@ export const productosData = [
     title: "Bolsas y Rollos Pigmentados",
     price: 450.00,
     tag: "Variedad",
-    img: "",
+    img: "https://www.gtg.com.do/media/design/PIGMENTADO-01-min.webp",
     desc: "Fabricación de bolsas y rollos en polietileno de alta y baja densidad. Disponibles en opciones transparentes o pigmentadas según su requerimiento.",
   },
   {
@@ -39,7 +39,7 @@ export const productosData = [
     title: "Láminas de Polietileno",
     price: 600.00,
     tag: "Protección",
-    img: "https://www.plasticosyempaques.com/wp-content/uploads/2018/05/laminas-de-polietileno.jpg",
+    img: "https://www.gtg.com.do/media/design/POLYOVERLAY-01-min.webp",
     desc: "Láminas de plástico resistentes y versátiles, ideales para procesos de corte industrial, división de productos o empaque manual.",
   },
   {
@@ -47,7 +47,7 @@ export const productosData = [
     title: "Rollos Precortados (Lavandería)",
     price: 1200.00,
     tag: "Textil",
-    img: "https://www.fundaexpress.com.do/wp-content/uploads/2020/07/rollos-precortados-transparente.jpg",
+    img: "https://www.gtg.com.do/media/design/PRECORTADO-01-min.webp",
     desc: "Rollos con precorte especial diseñados para agilizar el trabajo en lavanderías, tintorerías y textil.",
   }
 ];

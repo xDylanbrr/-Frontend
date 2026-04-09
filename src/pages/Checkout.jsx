@@ -15,7 +15,7 @@ const css = `
 
   /* HERO */
   .ck-hero {
-    background: #1B3A5C;
+    background: #0f172a;
     padding: 36px 40px 44px;
     position: relative; overflow: hidden;
   }
@@ -29,7 +29,7 @@ const css = `
     content: ''; position: absolute;
     bottom: -50px; left: -50px;
     width: 180px; height: 180px; border-radius: 50%;
-    background: rgba(230,57,70,0.08);
+    background: rgba(220,38,38,0.08);
   }
   .ck-hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -49,7 +49,7 @@ const css = `
     letter-spacing: -0.5px; line-height: 1.1;
     position: relative; z-index: 1;
   }
-  .ck-hero-title span { color: #E63946; }
+  .ck-hero-title span { color: #dc2626; }
   .ck-hero-sub {
     font-size: 13px; color: rgba(255,255,255,0.4);
     font-weight: 400; margin-top: 8px;
@@ -70,8 +70,8 @@ const css = `
   .ck-card {
     background: white;
     border-radius: 24px;
-    border: 1px solid rgba(27,58,92,0.06);
-    box-shadow: 0 4px 20px rgba(27,58,92,0.06);
+    border: 1px solid rgba(15,23,42,0.06);
+    box-shadow: 0 4px 20px rgba(15,23,42,0.06);
     overflow: hidden;
     margin-bottom: 16px;
   }
@@ -86,7 +86,7 @@ const css = `
     width: 34px; height: 34px; border-radius: 10px;
     background: #f0f4f8; border: 1px solid #e2e8f0;
     display: flex; align-items: center; justify-content: center;
-    color: #1B3A5C; flex-shrink: 0;
+    color: #0f172a; flex-shrink: 0;
   }
   .ck-card-title {
     font-size: 15px; font-weight: 800; color: #111827;
@@ -119,19 +119,19 @@ const css = `
     cursor: pointer; transition: all 0.15s; text-align: left;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
-  .ck-delivery-opt:hover { border-color: #1B3A5C; }
+  .ck-delivery-opt:hover { border-color: #0f172a; }
   .ck-delivery-opt.active {
-    border-color: #1B3A5C; background: #eff6ff;
-    box-shadow: 0 0 0 3px rgba(27,58,92,0.08);
+    border-color: #0f172a; background: #eff6ff;
+    box-shadow: 0 0 0 3px rgba(15,23,42,0.08);
   }
   .ck-delivery-opt-icon {
     width: 32px; height: 32px; border-radius: 9px;
     background: #e0e7ff; display: flex;
     align-items: center; justify-content: center;
-    color: #1B3A5C; margin-bottom: 10px;
+    color: #0f172a; margin-bottom: 10px;
   }
   .ck-delivery-opt.active .ck-delivery-opt-icon {
-    background: #1B3A5C; color: white;
+    background: #0f172a; color: white;
   }
   .ck-delivery-opt-label {
     font-size: 13px; font-weight: 700; color: #111827;
@@ -143,17 +143,17 @@ const css = `
 
   /* CONFIRM BTN */
   .ck-confirm-card {
-    background: #1B3A5C;
+    background: #0f172a;
     border-radius: 20px; padding: 28px 28px 24px;
     position: relative; overflow: hidden;
     margin-bottom: 0;
-    border: none; box-shadow: 0 8px 32px rgba(27,58,92,0.25);
+    border: none; box-shadow: 0 8px 32px rgba(15,23,42,0.25);
   }
   .ck-confirm-card::before {
     content: ''; position: absolute;
     top: -40px; right: -40px;
     width: 120px; height: 120px; border-radius: 50%;
-    background: rgba(230,57,70,0.12);
+    background: rgba(220,38,38,0.12);
   }
   .ck-confirm-note {
     font-size: 12px; color: rgba(255,255,255,0.4);
@@ -163,16 +163,16 @@ const css = `
   }
   .ck-confirm-btn {
     width: 100%; padding: 16px;
-    background: #E63946; color: white;
+    background: #dc2626; color: white;
     border: none; border-radius: 14px;
     font-size: 15px; font-weight: 800;
     cursor: pointer; transition: all 0.2s;
     font-family: 'Plus Jakarta Sans', sans-serif;
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    box-shadow: 0 6px 20px rgba(230,57,70,0.35);
+    box-shadow: 0 6px 20px rgba(220,38,38,0.35);
     position: relative; z-index: 1;
   }
-  .ck-confirm-btn:hover:not(:disabled) { background: #c1121f; transform: translateY(-1px); }
+  .ck-confirm-btn:hover:not(:disabled) { background: #b91c1c; transform: translateY(-1px); }
   .ck-confirm-btn:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); cursor: not-allowed; box-shadow: none; }
 
   .ck-spinner {
@@ -187,8 +187,8 @@ const css = `
   .ck-summary {
     background: white;
     border-radius: 24px;
-    border: 1px solid rgba(27,58,92,0.06);
-    box-shadow: 0 4px 20px rgba(27,58,92,0.06);
+    border: 1px solid rgba(15,23,42,0.06);
+    box-shadow: 0 4px 20px rgba(15,23,42,0.06);
     overflow: hidden;
     position: sticky; top: 24px;
   }
@@ -222,7 +222,7 @@ const css = `
     font-size: 10px; color: #94a3b8; font-weight: 600; margin-top: 2px;
   }
   .ck-summary-item-price {
-    font-size: 13px; font-weight: 800; color: #1B3A5C; flex-shrink: 0;
+    font-size: 13px; font-weight: 800; color: #0f172a; flex-shrink: 0;
   }
 
   .ck-totals { padding: 16px 24px; border-top: 1px solid #f1f5f9; }
@@ -236,7 +236,7 @@ const css = `
     padding-top: 12px; border-top: 1px solid #f1f5f9; margin-top: 4px;
   }
   .ck-grand-label { font-size: 15px; font-weight: 800; color: #111827; }
-  .ck-grand-val { font-size: 22px; font-weight: 800; color: #1B3A5C; }
+  .ck-grand-val { font-size: 22px; font-weight: 800; color: #0f172a; }
 
   /* SUCCESS */
   .ck-success {
@@ -247,8 +247,8 @@ const css = `
   .ck-success-card {
     background: white; border-radius: 28px; padding: 56px 48px;
     text-align: center; max-width: 440px; width: 100%;
-    box-shadow: 0 8px 40px rgba(27,58,92,0.10);
-    border: 1px solid rgba(27,58,92,0.06);
+    box-shadow: 0 8px 40px rgba(15,23,42,0.10);
+    border: 1px solid rgba(15,23,42,0.06);
     animation: ckFadeUp 0.5s ease both;
   }
   @keyframes ckFadeUp {
@@ -322,12 +322,12 @@ export default function Checkout() {
 
   const generarPDF = (pedidoId, cliente, productos) => {
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-    doc.setFillColor(27, 58, 92);
+    doc.setFillColor(15, 23, 42);
     doc.rect(0, 0, 210, 40, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(20);
     doc.text("GTG — FACTURA DE PEDIDO", 20, 26);
-    doc.setTextColor(27, 58, 92);
+    doc.setTextColor(15, 23, 42);
     doc.setFontSize(11);
     doc.text(`ORDEN: #${pedidoId}`, 130, 55);
     doc.text(`Fecha: ${new Date().toLocaleDateString('es-DO')}`, 130, 62);

@@ -40,37 +40,7 @@ export default function Calidad() {
 
           {/* Main Content Sections */}
           <div className="flex flex-col gap-16 md:gap-24 py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Section 1: Normas y Certificaciones */}
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary text-3xl">verified</span>
-                  <h2 className="text-black dark:text-black text-[22px] font-bold leading-tight tracking-[-0.015em]">Normas y Certificaciones</h2>
-                </div>
-                <p className="text-black dark:text-black">Nos adherimos a las más altas normas internacionales para asegurar la seguridad y calidad de los productos en todas nuestras operaciones. Nuestras certificaciones son un testimonio de nuestra incansable búsqueda de la excelencia.</p>
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 pt-4">
-                  <div className="flex items-center justify-center p-4 bg-white dark:bg-background-dark rounded-lg border border-gray-200 dark:border-white/10 aspect-square">
-                    <img alt="ISO Certification Logo" className="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_MeQsiq49efqeVmas5oGJRj9PkyZ03EaZcd05PaUQDNxxHdQtoiLzhh1wrMQhq3jaUSVuFE9_wH3syn4bC5iNALcEW1ar_D0rij8xOZou8GmEPUqEzPR3cyYo1sw4a1LqKMT9JkMJamAvJI1kLm0scixmSN9jAmMACz--q4kQr8TlPni_sT3JZlkorPZY34pmS_n-Xk78XzRv5JgW1eA8tbFk_e2-P0gJF8DiNjUY6WcJK_BqsR8L5h_2QmcbywLgD39L8MDdJupV" />
-                  </div>
-                  <div className="flex items-center justify-center p-4 bg-white dark:bg-background-dark rounded-lg border border-gray-200 dark:border-white/10 aspect-square">
-                    <img alt="ASTM International Logo" className="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRmW0EFwJwVuS2P2_d9R4d7uYw_9bu3deaFe5t8KVEiIqGRWeHhAt6oVBrx4HOkK2Juoo_kwTs9GJ8T0M8ZI2iN6FtpxwLyEXTJfr-JooQMl0CQnvFTtkI7_qEr4v_37diTwh-RelZMH3qEdNm759dlPUfJ2SP02r5vQ-Sgm9-J320KSOd8hc1kTZEK71uOxLXlfsTWgH6cHdCRyCBHjpGiLouyFcdY0h2Ncm9qV4YCb8akiP71VQ8mPkwsuc1sTSBlvh_atlg2XNg" />
-                  </div>
-                  <div className="flex items-center justify-center p-4 bg-white dark:bg-background-dark rounded-lg border border-gray-200 dark:border-white/10 aspect-square">
-                    <img alt="FSSC 22000 Logo" className="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiKhyxy13sQc3tnSrBNREtyxeB7a0Y7l6diqYN6PTC3Ke1m4PA5DeEgpjpGLIV0MMCZBqRzecmuCUWZ0h6dwBMLOMj23r2wbSMUt6d60tEjSq8IN6MA-JqPjEyX0XG3fBGSmoIulJ256WCOyzV92uRagS6_t9HtBJi0bdz9guNOsS1qoEh0GQ3cEP_YZSxCVL5PivzdpgeU2-IezLJ7m76esQLT5GtdIiFKnLoT13hTZFvro3jJuqx-Z8VBhRKcFT1Q0-MhPgTiueh" />
-                  </div>
-                  <div className="flex items-center justify-center p-4 bg-white dark:bg-background-dark rounded-lg border border-gray-200 dark:border-white/10 aspect-square">
-                    <img alt="BRCGS Logo" className="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDamzA358qgqOptHErHDsLu-kLqkw4ULhlxp0XnVk_7NBq09fc-qZP_AK-9g33YHn7V2WGZlhELd4tlg2AZsSY2-4_lXKNfGtFUCFqKFrRN_xxpNlR28uvbRgpCKE24xkY_CZAjllNaxrC_8jWTiyzWZ_uOlOnFcak676pc-JCeQ8s2RMkUy1ec-_hO58gwR4Ug7z0k8ZhStiI_e5xyGkUJyc9ap5zv8s2H9BsDGqwqSCYnSk0Nyccnrs2kUJRt8qq6x53bPDSr8eu8" />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
-                style={{
-                  backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuBfo_lL6e8GG1Lep8xApWhurUH1ZjoQeGS0i5YpB-54hSVV6DtybQ18ZaFZR2U0p5FnGdiqZd2qBPEmcuENbj4YUWw45NUsnrui6apFEF60wg1x_r8BZOkIhI2AYNj4UoVW9KCzd2KYU_LK2sYIfQeYlaLnIFi5eAIRMRGQNkX6XNhq2m1AW2lmVZZ16LUHav3GbXSQfAI8gV3VN-hG1ay79X9Qtt-1WSPspDvRQtC3PwDcW28rC3Df0C6Cm6jewRxE_Zx2oqWb1JPr")`
-                }}
-              />
-            </section>
-
+            
             {/* Section 2: Control de Calidad Riguroso */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               <div

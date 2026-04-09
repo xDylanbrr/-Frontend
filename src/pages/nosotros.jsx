@@ -92,33 +92,6 @@ export default function Nosotros() {
             </div>
           </section>
 
-          {/* Nuestro Compromiso con la Calidad */}
-          <section className="py-16 sm:py-24">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div className="w-full aspect-4/3 rounded-xl overflow-hidden shadow-lg">
-                  <div
-                    className="w-full h-full bg-center bg-cover"
-                    style={{
-                      backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzx-921yqZ64DCm9R_iaK0rhZK8CBrVbM_5eYEMqB0KXFOalnaXj6UO8RIyLfiWjRbGAS1M6wx8pBYyKyqa-s4uMan3TsDti8ommbWd-eqWKPI3YDHJfUdpECvo4qVt36vfDdLPugY95W45LjZFbSv6-05a7kCDaG1jDECdP-VJ_c0NqEPCtJ4hGa7I4vma2fsr22vynnNWsJsp8PHahHnriWSbzFaas5TrEXZMpA6RcAR4mWlr4T3Q9239xOhgOWG5u1BzIWCwKD-")`
-                    }}
-                  />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <h2 className="text-text-light dark:text-text-dark tracking-light text-3xl font-bold leading-tight md:text-4xl">
-                    Nuestro Compromiso con la Calidad
-                  </h2>
-                  <p className="text-subtle-text-light dark:text-subtle-text-dark text-base font-normal leading-relaxed">
-                    En GTG, la calidad no es una opción, es una promesa. Nos adherimos a las más estrictas normas y certificaciones internacionales para asegurar que cada producto que sale de nuestras instalaciones cumple con los más altos estándares de excelencia.
-                  </p>
-                  <p className="text-subtle-text-light dark:text-subtle-text-dark text-base font-normal leading-relaxed">
-                    Nuestro riguroso control de calidad abarca cada etapa del proceso de producción, desde la materia prima hasta el empaque final, garantizando soluciones seguras, confiables y eficientes para nuestros clientes.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
           {/* Sostenibilidad Ambiental */}
           <section className="bg-card-light dark:bg-card-dark py-16 sm:py-24">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

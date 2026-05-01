@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserShield, FaLock, FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
+import API_BASE_URL from "../apiConfig";
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -17,7 +18,7 @@ const css = `
   .admin-left {
     width: 420px;
     flex-shrink: 0;
-    background: #1B3A5C;
+    background: #1e1b4b;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -49,7 +50,7 @@ const css = `
     color: white;
     letter-spacing: -1px;
   }
-  .admin-left-logo span { color: #E63946; }
+  .admin-left-logo span { color: #06b6d4; }
 
   .admin-left-body { position: relative; z-index: 1; }
 
@@ -116,8 +117,8 @@ const css = `
     padding: 44px 40px;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 8px 40px rgba(27,58,92,0.10);
-    border: 1px solid rgba(27,58,92,0.06);
+    box-shadow: 0 8px 40px rgba(30,27,75,0.10);
+    border: 1px solid rgba(30,27,75,0.06);
     animation: adminFadeUp 0.5s ease both;
   }
   @keyframes adminFadeUp {
@@ -183,9 +184,9 @@ const css = `
     box-sizing: border-box;
   }
   .admin-input:focus {
-    border-color: #1B3A5C;
+    border-color: #1e1b4b;
     background: white;
-    box-shadow: 0 0 0 4px rgba(27,58,92,0.07);
+    box-shadow: 0 0 0 4px rgba(30,27,75,0.07);
   }
   .admin-input.error {
     border-color: #f87171;
@@ -207,7 +208,7 @@ const css = `
     font-size: 14px;
     transition: color 0.2s;
   }
-  .admin-input-toggle:hover { color: #1B3A5C; }
+  .admin-input-toggle:hover { color: #1e1b4b; }
 
   .admin-error-msg {
     font-size: 11px;
@@ -236,8 +237,8 @@ const css = `
     flex-shrink: 0;
   }
   .admin-remember-box.checked {
-    background: #1B3A5C;
-    border-color: #1B3A5C;
+    background: #1e1b4b;
+    border-color: #1e1b4b;
   }
   .admin-remember-box.checked::after {
     content: '';
@@ -256,7 +257,7 @@ const css = `
   .admin-btn {
     width: 100%;
     padding: 14px;
-    background: #1B3A5C;
+    background: #1e1b4b;
     color: white;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
@@ -270,12 +271,12 @@ const css = `
     gap: 10px;
     letter-spacing: 0.02em;
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 16px rgba(27,58,92,0.25);
+    box-shadow: 0 4px 16px rgba(30,27,75,0.25);
   }
   .admin-btn:hover:not(:disabled) {
-    background: #15304d;
+    background: #312e81;
     transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(27,58,92,0.30);
+    box-shadow: 0 8px 24px rgba(30,27,75,0.30);
   }
   .admin-btn:active:not(:disabled) { transform: translateY(0); }
   .admin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -316,7 +317,6 @@ export default function AdminLogin({ setUser }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
   // Auto-login si hay sesión guardada
   useEffect(() => {
     const sesionGuardada = localStorage.getItem("admin");
@@ -326,9 +326,7 @@ export default function AdminLogin({ setUser }) {
     }
     // Cargar credenciales recordadas
     const savedId = localStorage.getItem("admin_remember_id");
-    const savedPass = localStorage.getItem("admin_remember_pass");
     if (savedId) { setId(savedId); setRememberMe(true); }
-    if (savedPass) setPassword(savedPass);
   }, [navigate]);
 
   const validateForm = () => {
@@ -344,25 +342,24 @@ export default function AdminLogin({ setUser }) {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      const response = await fetch("https://backend-m3nj.onrender.com/api/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cedula: id, password })
+        body: JSON.stringify({ cedula: id, password }),
       });
       const data = await response.json();
       if (response.ok) {
         const userData = data.user || data.usuario || data.admin || data;
         localStorage.setItem("admin", JSON.stringify(userData));
         if (data.token) localStorage.setItem("token", data.token);
+        if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
 
-        // Guardar o limpiar credenciales según "Recordarme"
         if (rememberMe) {
           localStorage.setItem("admin_remember_id", id);
-          localStorage.setItem("admin_remember_pass", password);
         } else {
           localStorage.removeItem("admin_remember_id");
-          localStorage.removeItem("admin_remember_pass");
         }
+        localStorage.removeItem("admin_remember_pass");
 
         if (setUser) setUser({ data: userData, role: "admin" });
         navigate("/administracion/empleados");

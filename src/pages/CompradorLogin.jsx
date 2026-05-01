@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock, FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
+import API_BASE_URL from "../apiConfig";
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -17,7 +18,7 @@ const css = `
   .cl-left {
     width: 420px;
     flex-shrink: 0;
-    background: #1B3A5C;
+    background: #1e1b4b;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -46,7 +47,7 @@ const css = `
     font-size: 28px; font-weight: 800;
     color: white; letter-spacing: -1px;
   }
-  .cl-logo span { color: #E63946; }
+  .cl-logo span { color: #06b6d4; }
 
   .cl-left-body { position: relative; z-index: 1; }
 
@@ -96,8 +97,8 @@ const css = `
   .cl-card {
     background: white; border-radius: 28px;
     padding: 44px 40px; width: 100%; max-width: 420px;
-    box-shadow: 0 8px 40px rgba(27,58,92,0.10);
-    border: 1px solid rgba(27,58,92,0.06);
+    box-shadow: 0 8px 40px rgba(30,27,75,0.10);
+    border: 1px solid rgba(30,27,75,0.06);
     animation: clFadeUp 0.5s ease both;
   }
   @keyframes clFadeUp {
@@ -140,8 +141,8 @@ const css = `
     box-sizing: border-box;
   }
   .cl-input:focus {
-    border-color: #1B3A5C; background: white;
-    box-shadow: 0 0 0 4px rgba(27,58,92,0.07);
+    border-color: #1e1b4b; background: white;
+    box-shadow: 0 0 0 4px rgba(30,27,75,0.07);
   }
   .cl-input.error { border-color: #f87171; background: #fff5f5; }
 
@@ -153,7 +154,7 @@ const css = `
     display: flex; align-items: center; font-size: 14px;
     transition: color 0.2s;
   }
-  .cl-input-toggle:hover { color: #1B3A5C; }
+  .cl-input-toggle:hover { color: #1e1b4b; }
 
   .cl-error-msg {
     font-size: 11px; color: #ef4444; font-weight: 600;
@@ -178,7 +179,7 @@ const css = `
     transition: all 0.2s; flex-shrink: 0;
   }
   .cl-remember-box.checked {
-    background: #1B3A5C; border-color: #1B3A5C;
+    background: #1e1b4b; border-color: #1e1b4b;
   }
   .cl-remember-box.checked::after {
     content: '';
@@ -195,19 +196,19 @@ const css = `
   /* BUTTON */
   .cl-btn {
     width: 100%; padding: 14px;
-    background: #1B3A5C; color: white;
+    background: #1e1b4b; color: white;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px; font-weight: 700;
     border: none; border-radius: 14px; cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: 10px;
     letter-spacing: 0.02em;
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 16px rgba(27,58,92,0.25);
+    box-shadow: 0 4px 16px rgba(30,27,75,0.25);
     margin-bottom: 20px;
   }
   .cl-btn:hover:not(:disabled) {
-    background: #15304d; transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(27,58,92,0.30);
+    background: #312e81; transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(30,27,75,0.30);
   }
   .cl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
@@ -224,12 +225,12 @@ const css = `
   }
   .cl-register-link button {
     background: none; border: none; cursor: pointer;
-    color: #1B3A5C; font-weight: 700; font-size: 13px;
+    color: #1e1b4b; font-weight: 700; font-size: 13px;
     font-family: 'Plus Jakarta Sans', sans-serif;
     margin-left: 4px; text-decoration: underline;
     transition: color 0.2s;
   }
-  .cl-register-link button:hover { color: #E63946; }
+  .cl-register-link button:hover { color: #06b6d4; }
 
   @media (max-width: 768px) {
     .cl-left { display: none; }
@@ -238,7 +239,7 @@ const css = `
   }
 `;
 
-export default function CompradorLogin() {
+export default function CompradorLogin({ setUser }) {
   const [cedula, setCedula] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -246,7 +247,6 @@ export default function CompradorLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
   useEffect(() => {
     const sesionGuardada = localStorage.getItem("comprador");
     if (sesionGuardada && sesionGuardada !== "undefined") {
@@ -255,9 +255,7 @@ export default function CompradorLogin() {
     }
     // Cargar credenciales recordadas
     const savedCedula = localStorage.getItem("comprador_remember_cedula");
-    const savedPass   = localStorage.getItem("comprador_remember_pass");
     if (savedCedula) { setCedula(savedCedula); setRememberMe(true); }
-    if (savedPass)   setPassword(savedPass);
   }, [navigate]);
 
   const validateForm = () => {
@@ -273,7 +271,7 @@ export default function CompradorLogin() {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      const response = await fetch("https://backend-m3nj.onrender.com/api/auth/comprador-login", {
+      const response = await fetch(`${API_BASE_URL}/auth/comprador-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cedula, password }),
@@ -284,16 +282,17 @@ export default function CompradorLogin() {
         const userData = data.user || data.comprador || data.usuario || data;
         localStorage.setItem("comprador", JSON.stringify(userData));
         if (data.token) localStorage.setItem("token", data.token);
+        if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
 
         if (rememberMe) {
           localStorage.setItem("comprador_remember_cedula", cedula);
-          localStorage.setItem("comprador_remember_pass", password);
         } else {
           localStorage.removeItem("comprador_remember_cedula");
-          localStorage.removeItem("comprador_remember_pass");
         }
+        localStorage.removeItem("comprador_remember_pass");
 
-        window.location.href = "/";
+        if (setUser) setUser({ role: "comprador", data: userData });
+        navigate("/");
       } else {
         setErrors({ general: data.message || "Cédula o contraseña incorrectos" });
       }

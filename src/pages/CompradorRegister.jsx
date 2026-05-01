@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaBuilding, FaPhone, FaEnvelope, FaLock, FaUserPlus, FaIdCard } from "react-icons/fa";
+import API_BASE_URL from "../apiConfig";
 
-export default function CompradorRegister() {
+export default function CompradorRegister({ setUser }) {
   const [formData, setFormData] = useState({
     nombre: "",
     cedula: "",
@@ -65,7 +66,7 @@ export default function CompradorRegister() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://backend-m3nj.onrender.com/api/auth/comprador-register", {
+      const response = await fetch(`${API_BASE_URL}/auth/comprador-register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -74,14 +75,13 @@ export default function CompradorRegister() {
       const data = await response.json();
 
       if (response.ok) {
-        // Guardamos sesión para entrar directo
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-        }
+        const userData = data.user || data;
+        localStorage.setItem("comprador", JSON.stringify(userData));
+        if (data.token) localStorage.setItem("token", data.token);
+        if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
 
-        alert("¡Registro exitoso! Bienvenido a GTG.");
-        navigate("/"); // Redirección a la principal
+        if (setUser) setUser({ role: "comprador", data: userData });
+        navigate("/");
       } else {
         setErrors({ general: data.message || "Error al registrar" });
       }
@@ -211,7 +211,7 @@ export default function CompradorRegister() {
 
         <div className="mt-6 text-center text-sm">
           <button
-            onClick={() => navigate("/comprador-login")}
+            onClick={() => navigate("/login-gtg")}
             className="text-blue-600 font-semibold hover:underline"
           >
             ¿Ya tienes cuenta? Inicia sesión

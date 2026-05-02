@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import OrdenPedidoForm from './OrdenPedidoForm';
 import OrdenPedidoList from './OrdenPedidoList';
 import { obtenerOrdenes, eliminarOrden } from '../../../services/produccion/orden_pedido.service';
@@ -23,13 +24,13 @@ const OrdenPedidoPage = () => {
   };
 
   const handleEliminar = async (id) => {
-    if (window.confirm('¿Seguro que deseas eliminar esta orden?')) {
-      try {
-        await eliminarOrden(id);
-        cargarLista(); 
-      } catch (error) {
-        alert(error.message);
-      }
+    // Sustituir confirm nativo por lógica de UI limpia (opcionalmente se podría usar un modal, pero por ahora toast es más profesional que alert)
+    try {
+      await eliminarOrden(id);
+      toast.success('🗑️ Orden eliminada correctamente');
+      cargarLista(); 
+    } catch (error) {
+      toast.error('❌ Error al eliminar: ' + error.message);
     }
   };
 

@@ -15,7 +15,7 @@ const css = `
 
   /* HERO */
   .dp-hero {
-    background: #1B3A5C;
+    background: #c1121f;
     padding: 28px 40px;
     position: relative; overflow: hidden;
   }
@@ -50,8 +50,8 @@ const css = `
   .dp-card {
     background: white;
     border-radius: 28px;
-    border: 1px solid rgba(27,58,92,0.06);
-    box-shadow: 0 8px 40px rgba(27,58,92,0.08);
+    border: 1px solid rgba(30,27,75,0.06);
+    box-shadow: 0 8px 40px rgba(30,27,75,0.08);
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -68,7 +68,7 @@ const css = `
   }
   .dp-img-tag {
     position: absolute; top: 20px; left: 20px;
-    background: #1B3A5C; color: white;
+    background: #1e1b4b; color: white;
     font-size: 10px; font-weight: 700;
     padding: 5px 14px; border-radius: 20px;
     letter-spacing: 0.06em; text-transform: uppercase;
@@ -117,7 +117,7 @@ const css = `
   }
 
   .dp-price {
-    font-size: 40px; font-weight: 800; color: #1B3A5C;
+    font-size: 40px; font-weight: 800; color: #1e1b4b;
     letter-spacing: -1px; margin-bottom: 28px; line-height: 1;
   }
   .dp-price-currency {
@@ -129,32 +129,12 @@ const css = `
     height: 1px; background: #f1f5f9; margin: 0 0 24px;
   }
 
-  /* FORMAT */
+  /* QUANTITY + ADD */
   .dp-section-label {
     font-size: 10px; font-weight: 800; color: #94a3b8;
     text-transform: uppercase; letter-spacing: 0.12em;
     margin-bottom: 12px; display: block;
   }
-  .dp-formats {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-bottom: 28px;
-  }
-  .dp-format-btn {
-    padding: 9px 18px; border-radius: 12px;
-    font-size: 13px; font-weight: 700;
-    border: 1.5px solid #e2e8f0;
-    background: #f8fafc; color: #64748b;
-    cursor: pointer; transition: all 0.15s;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-  }
-  .dp-format-btn:hover { border-color: #1B3A5C; color: #1B3A5C; }
-  .dp-format-btn.active {
-    border-color: #1B3A5C;
-    background: #eff6ff; color: #1B3A5C;
-    box-shadow: 0 0 0 3px rgba(27,58,92,0.08);
-  }
-
-  /* QUANTITY + ADD */
   .dp-actions {
     display: flex; gap: 12px; margin-bottom: 14px;
   }
@@ -172,15 +152,25 @@ const css = `
     font-family: 'Plus Jakarta Sans', sans-serif;
     display: flex; align-items: center; justify-content: center;
   }
-  .dp-qty-btn:hover { color: #1B3A5C; background: #e0e7ff; }
-  .dp-qty-val {
-    width: 44px; text-align: center;
+  .dp-qty-btn:hover { color: #1e1b4b; background: #e0e7ff; }
+  
+  /* Nuevo estilo para el input de cantidad */
+  .dp-qty-input {
+    width: 60px; text-align: center;
     font-size: 16px; font-weight: 800; color: #111827;
+    border: none; background: transparent; outline: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -moz-appearance: textfield;
+  }
+  .dp-qty-input::-webkit-outer-spin-button,
+  .dp-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 
   .dp-add-btn {
     flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
-    background: #f0f4f8; color: #1B3A5C;
+    background: #f0f4f8; color: #1e1b4b;
     border: 1.5px solid #e2e8f0;
     border-radius: 14px; padding: 0 20px;
     font-size: 14px; font-weight: 700;
@@ -188,22 +178,22 @@ const css = `
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
   .dp-add-btn:hover {
-    background: #1B3A5C; color: white;
-    border-color: #1B3A5C;
+    background: #1e1b4b; color: white;
+    border-color: #1e1b4b;
   }
 
   .dp-buy-btn {
     width: 100%; padding: 16px;
-    background: #E63946; color: white;
+    background: #c1121f; color: white;
     border: none; border-radius: 14px;
     font-size: 15px; font-weight: 800;
     cursor: pointer; transition: all 0.2s;
     font-family: 'Plus Jakarta Sans', sans-serif;
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    box-shadow: 0 6px 20px rgba(230,57,70,0.28);
+    box-shadow: 0 6px 20px rgba(193,18,31,0.28);
     margin-bottom: 28px;
   }
-  .dp-buy-btn:hover { background: #c1121f; transform: translateY(-1px); }
+  .dp-buy-btn:hover { background: #a00f1a; transform: translateY(-1px); }
   .dp-buy-btn:active { transform: translateY(0); }
 
   /* DESC */
@@ -233,7 +223,6 @@ export default function DetalleProducto() {
 
   const producto = productosData.find(p => p.id === parseInt(id));
   const [cantidad, setCantidad] = useState(1);
-  const [formato, setFormato] = useState('Individual');
 
   if (!producto) return (
     <div style={{ textAlign: 'center', padding: '80px 20px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -241,11 +230,20 @@ export default function DetalleProducto() {
     </div>
   );
 
+  // Nueva función para manejar el input manual de cantidad
+  const handleCantidadChange = (e) => {
+    const val = parseInt(e.target.value);
+    if (isNaN(val) || val < 1) {
+      setCantidad(1);
+    } else {
+      setCantidad(val);
+    }
+  };
+
   const crearItemCarrito = () => ({
     ...producto,
     instanceId: Date.now(),
     cantidad,
-    formato,
     price: producto.price
   });
 
@@ -297,26 +295,17 @@ export default function DetalleProducto() {
 
               <div className="dp-divider" />
 
-              {/* FORMATO */}
-              <span className="dp-section-label">Seleccionar Formato</span>
-              <div className="dp-formats">
-                {['Individual', 'x10 unidades', 'x100 unidades'].map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setFormato(f)}
-                    className={`dp-format-btn${formato === f ? ' active' : ''}`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-
               {/* CANTIDAD + AGREGAR */}
               <span className="dp-section-label">Cantidad</span>
               <div className="dp-actions">
                 <div className="dp-qty">
                   <button className="dp-qty-btn" onClick={() => setCantidad(Math.max(1, cantidad - 1))}>−</button>
-                  <span className="dp-qty-val">{cantidad}</span>
+                  <input 
+                    type="number" 
+                    className="dp-qty-input" 
+                    value={cantidad} 
+                    onChange={handleCantidadChange}
+                  />
                   <button className="dp-qty-btn" onClick={() => setCantidad(cantidad + 1)}>+</button>
                 </div>
                 <button className="dp-add-btn" onClick={handleAgregar}>

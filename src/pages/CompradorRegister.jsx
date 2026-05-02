@@ -93,13 +93,13 @@ export default function CompradorRegister({ setUser }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 font-display py-8">
-      <div className="bg-white/95 backdrop-blur-sm w-[480px] max-w-[90vw] p-8 rounded-2xl shadow-2xl border border-blue-200 relative z-10">
+    <div className="min-h-screen flex items-center justify-center bg-white font-display py-8">
+      <div className="bg-white w-[480px] max-w-[90vw] p-8 rounded-2xl shadow-2xl border border-gray-100 relative z-10">
         <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg border-4 border-blue-100">
+          <div className="w-16 h-16 bg-[#E63946] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg border-4 border-red-50">
             <FaUserPlus className="text-white text-2xl" />
           </div>
-          <h1 className="text-3xl font-extrabold text-blue-900">Registro</h1>
+          <h1 className="text-3xl font-extrabold text-[#1e293b]">Registro</h1>
           <p className="text-gray-500 text-sm">Nuevo Comprador</p>
         </div>
 
@@ -120,7 +120,7 @@ export default function CompradorRegister({ setUser }) {
                 value={formData.nombre}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-3 py-3 border-2 rounded-xl outline-none transition-all ${
-                  errors.nombre ? "border-red-400" : "border-gray-200 focus:border-blue-500"
+                  errors.nombre ? "border-red-400" : "border-gray-200 focus:border-[#E63946]"
                 }`}
               />
             </div>
@@ -134,7 +134,7 @@ export default function CompradorRegister({ setUser }) {
                 value={formData.cedula}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-3 py-3 border-2 rounded-xl outline-none transition-all ${
-                  errors.cedula ? "border-red-400" : "border-gray-200 focus:border-blue-500"
+                  errors.cedula ? "border-red-400" : "border-gray-200 focus:border-[#E63946]"
                 }`}
               />
               {errors.cedula && <span className="text-[10px] text-red-500 absolute -bottom-4 left-0">{errors.cedula}</span>}
@@ -150,7 +150,7 @@ export default function CompradorRegister({ setUser }) {
                 placeholder="Empresa"
                 value={formData.empresa}
                 onChange={handleChange}
-                className="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-blue-500"
+                className="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-[#E63946]"
               />
             </div>
 
@@ -162,7 +162,7 @@ export default function CompradorRegister({ setUser }) {
                 placeholder="Teléfono"
                 value={formData.telefono}
                 onChange={handleChange}
-                className="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-blue-500"
+                className="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-[#E63946]"
               />
             </div>
           </div>
@@ -176,7 +176,7 @@ export default function CompradorRegister({ setUser }) {
               value={formData.email}
               onChange={handleChange}
               className={`w-full pl-10 pr-3 py-3 border-2 rounded-xl outline-none ${
-                errors.email ? "border-red-400" : "border-gray-200 focus:border-blue-500"
+                errors.email ? "border-red-400" : "border-gray-200 focus:border-[#E63946]"
               }`}
             />
           </div>
@@ -190,7 +190,7 @@ export default function CompradorRegister({ setUser }) {
               value={formData.password}
               onChange={handleChange}
               className={`w-full pl-10 pr-3 py-3 border-2 rounded-xl outline-none ${
-                errors.password ? "border-red-400" : "border-gray-200 focus:border-blue-500"
+                errors.password ? "border-red-400" : "border-gray-200 focus:border-[#E63946]"
               }`}
             />
           </div>
@@ -198,7 +198,7 @@ export default function CompradorRegister({ setUser }) {
           <button
             type="submit"
             disabled={isLoading}
-            className="flex items-center justify-center gap-3 mt-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all disabled:opacity-50 shadow-lg shadow-blue-200"
+            className="flex items-center justify-center gap-3 mt-4 py-3 bg-[#E63946] text-white font-bold rounded-xl hover:bg-[#DC2626] transition-all disabled:opacity-50 shadow-lg shadow-red-100"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -212,7 +212,7 @@ export default function CompradorRegister({ setUser }) {
         <div className="mt-6 text-center text-sm">
           <button
             onClick={() => navigate("/login-gtg")}
-            className="text-blue-600 font-semibold hover:underline"
+            className="text-[#E63946] font-semibold hover:underline"
           >
             ¿Ya tienes cuenta? Inicia sesión
           </button>

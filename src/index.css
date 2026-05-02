@@ -1,1 +1,46 @@
-@import 'tailwindcss'
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ─── GTG Design System — Light Mode ─── */
+
+  /* Accent */
+  --color-primary:        #E63946;   /* GTG Red */
+  --color-primary-light:  #EF4444;   /* Red hover */
+  --color-primary-dark:   #DC2626;   /* Red pressed */
+
+  /* Backgrounds */
+  --color-bg-base:        #F8FAFC;   /* Fondo principal */
+  --color-bg-surface:     #FFFFFF;   /* Secciones alternas */
+  --color-bg-card:        #FFFFFF;   /* Tarjetas */
+  --color-bg-muted:       #EFF6FF;   /* Fondo sutil con tinte cyan */
+
+  /* Borders */
+  --color-border:         #E2EBF5;   /* Borde estándar */
+  --color-border-subtle:  #F1F5F9;   /* Borde muy sutil */
+
+  /* Text */
+  --color-text-primary:   #0F172A;   /* Texto principal */
+  --color-text-secondary: #475569;   /* Texto secundario */
+  --color-text-muted:     #94A3B8;   /* Texto atenuado */
+
+  /* Legacy aliases */
+  --color-background-light: #F8FAFC;
+  --color-background-dark:  #0F172A;
+  --color-text-light:       #0F172A;
+  --color-text-dark:        #F8FAFC;
+  --color-section-light:    #F1F5F9;
+  --color-section-dark:     #1E293B;
+  --color-border-light:     #E2E8F0;
+  --color-border-dark:      #334155;
+
+  --font-display: "Manrope", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background-light text-text-light transition-colors duration-300 ease-in-out
+           dark:bg-background-dark dark:text-text-dark;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { crearOrden } from '../../../services/produccion/orden_pedido.service';
+import API_BASE_URL from '../../../apiConfig';
 
 const OrdenPedidoForm = ({ onOrdenCreada }) => {
   const [formData, setFormData] = useState({
@@ -21,8 +22,8 @@ const OrdenPedidoForm = ({ onOrdenCreada }) => {
   const cargarDatosDesplegables = async () => {
     try {
       const [resPedidos, resEmpleados] = await Promise.all([
-        fetch('https://backend-m3nj.onrender.com/api/pedidos'),
-        fetch('https://backend-m3nj.onrender.com/api/administracion/empleados')
+        fetch(`${API_BASE_URL}/pedidos`),
+        fetch(`${API_BASE_URL}/administracion/empleados`)
       ]);
 
       if (resPedidos.ok && resEmpleados.ok) {
@@ -33,7 +34,10 @@ const OrdenPedidoForm = ({ onOrdenCreada }) => {
         const listaPedidos = Array.isArray(dataPedidos) ? dataPedidos : (dataPedidos.pedidos || dataPedidos.data || Object.values(dataPedidos)[0] || []);
         const listaEmpleados = Array.isArray(dataEmpleados) ? dataEmpleados : (dataEmpleados.empleados || dataEmpleados.data || Object.values(dataEmpleados)[0] || []);
 
-        setPedidos(listaPedidos);
+        // 🚀 FILTRO: Ocultar pedidos que ya fueron entregados
+        const pedidosPendientes = listaPedidos.filter(p => p.estado !== 'Entregado');
+
+        setPedidos(pedidosPendientes);
         setEmpleados(listaEmpleados);
       } else {
         throw new Error("Error al cargar los datos.");
@@ -96,11 +100,14 @@ const OrdenPedidoForm = ({ onOrdenCreada }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">Estado Inicial</label>
-          <select name="estado" value={formData.estado} onChange={handleChange} className="w-full border p-2 rounded focus:ring-2 focus:ring-purple-500 outline-none bg-gray-50">
-            <option value="Pendiente">Pendiente</option>
-            <option value="En Producción">En Producción</option>
-          </select>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Estado Inicial (Bloqueado)</label>
+          <input 
+            type="text" 
+            name="estado" 
+            value="Pendiente" 
+            readOnly 
+            className="w-full border p-2 rounded bg-gray-100 text-gray-500 cursor-not-allowed outline-none"
+          />
         </div>
 
         <button type="submit" disabled={cargando} className="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded hover:bg-purple-700 transition-colors disabled:bg-purple-300 mt-4 shadow-sm">

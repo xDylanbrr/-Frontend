@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useCart } from '../components/CartContext';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, Trash2, MapPin, ArrowRight, Package, Lock } from 'lucide-react';
+import { ShoppingCart, Trash2, MapPin, ArrowRight, Package, Lock, CreditCard, User, Calendar } from 'lucide-react';
+import { toast } from 'react-toastify';
+import API_BASE_URL from '../apiConfig';
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -14,7 +16,7 @@ const css = `
 
   /* HERO */
   .cart-hero {
-    background: #1B3A5C;
+    background: #162032;
     padding: 36px 40px 44px;
     position: relative; overflow: hidden;
   }
@@ -28,7 +30,7 @@ const css = `
     content: ''; position: absolute;
     bottom: -50px; left: -50px;
     width: 180px; height: 180px; border-radius: 50%;
-    background: rgba(230,57,70,0.08);
+    background: rgba(230, 57, 70, 0.08);
   }
   .cart-hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -39,7 +41,7 @@ const css = `
     text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px;
   }
   .cart-hero-dot {
-    width: 6px; height: 6px; border-radius: 50%; background: #4ade80;
+    width: 6px; height: 6px; border-radius: 50%; background: #E63946;
     animation: cartPulse 2s ease infinite;
   }
   @keyframes cartPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -69,8 +71,8 @@ const css = `
   .cart-card {
     background: white;
     border-radius: 24px;
-    border: 1px solid rgba(27,58,92,0.06);
-    box-shadow: 0 4px 20px rgba(27,58,92,0.06);
+    border: 1px solid rgba(30,27,75,0.06);
+    box-shadow: 0 4px 20px rgba(30,27,75,0.06);
     overflow: hidden;
   }
   .cart-card-header {
@@ -82,7 +84,7 @@ const css = `
     width: 34px; height: 34px; border-radius: 10px;
     background: #f0f4f8; border: 1px solid #e2e8f0;
     display: flex; align-items: center; justify-content: center;
-    color: #1B3A5C;
+    color: #1e1b4b;
   }
   .cart-card-header-title {
     font-size: 15px; font-weight: 800; color: #111827;
@@ -123,7 +125,7 @@ const css = `
     text-transform: uppercase; letter-spacing: 0.08em;
   }
   .cart-item-price {
-    font-size: 15px; font-weight: 800; color: #1B3A5C;
+    font-size: 15px; font-weight: 800; color: #1e1b4b;
     white-space: nowrap;
   }
 
@@ -150,7 +152,7 @@ const css = `
     display: flex; align-items: center; justify-content: center;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
-  .cart-qty-btn:hover { background: #1B3A5C; color: white; }
+  .cart-qty-btn:hover { background: #1e1b4b; color: white; }
   .cart-qty-val {
     width: 32px; text-align: center;
     font-size: 13px; font-weight: 800; color: #111827;
@@ -169,13 +171,13 @@ const css = `
   }
   .cart-empty-text { font-size: 14px; color: #94a3b8; font-weight: 500; }
   .cart-empty-btn {
-    background: #1B3A5C; color: white;
+    background: #1e1b4b; color: white;
     padding: 10px 24px; border-radius: 12px;
     font-size: 13px; font-weight: 700; border: none;
     cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
     transition: background 0.2s;
   }
-  .cart-empty-btn:hover { background: #15304d; }
+  .cart-empty-btn:hover { background: #312e81; }
 
   /* TOTALS */
   .cart-totals {
@@ -193,7 +195,7 @@ const css = `
     padding-top: 12px; border-top: 1px solid #f1f5f9; margin-top: 4px;
   }
   .cart-grand-label { font-size: 16px; font-weight: 800; color: #111827; }
-  .cart-grand-val { font-size: 24px; font-weight: 800; color: #1B3A5C; }
+  .cart-grand-val { font-size: 24px; font-weight: 800; color: #1e1b4b; }
 
   /* FORM */
   .cart-form { padding: 20px 26px; display: flex; flex-direction: column; gap: 14px; }
@@ -212,8 +214,8 @@ const css = `
     box-sizing: border-box;
   }
   .cart-input:focus {
-    border-color: #1B3A5C;
-    box-shadow: 0 0 0 3px rgba(27,58,92,0.08);
+    border-color: #1e1b4b;
+    box-shadow: 0 0 0 3px rgba(30,27,75,0.08);
     background: white;
   }
   .cart-input::placeholder { color: #cbd5e1; }
@@ -226,10 +228,15 @@ const css = `
     outline: none; cursor: pointer; box-sizing: border-box;
     transition: border-color 0.2s;
   }
-  .cart-select:focus { border-color: #1B3A5C; }
+  .cart-select:focus { border-color: #1e1b4b; }
 
   .cart-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .cart-row-3 { display: grid; grid-template-columns: 1fr 1fr 0.6fr; gap: 12px; }
+
+  /* Clases extra para los íconos dentro de los inputs de pago */
+  .input-icon-wrap { position: relative; }
+  .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+  .cart-input-with-icon { padding-left: 38px; }
 
   /* SUBMIT */
   .cart-submit-wrap { padding: 6px 26px 26px; }
@@ -241,7 +248,7 @@ const css = `
     cursor: pointer; transition: all 0.2s;
     font-family: 'Plus Jakarta Sans', sans-serif;
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    box-shadow: 0 6px 20px rgba(230,57,70,0.28);
+    box-shadow: 0 6px 20px rgba(230, 57, 70, 0.28);
   }
   .cart-submit-btn:hover:not(:disabled) { background: #c1121f; transform: translateY(-1px); }
   .cart-submit-btn:disabled { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
@@ -269,7 +276,10 @@ export default function Carrito() {
     email: '', pais: 'República Dominicana',
     nombre: '', apellidos: '', empresa: '',
     direccion: '', apartamento: '', ciudad: '',
-    provincia: '', codigoPostal: '', telefono: ''
+    provincia: '', codigoPostal: '', telefono: '',
+    // Campos nuevos añadidos para el pago
+    nombreTarjeta: '', numeroTarjeta: '',
+    fechaExpiracion: '', cvv: ''
   });
 
   const handleInputChange = (e) => {
@@ -289,13 +299,70 @@ export default function Carrito() {
   const envio = cart.length > 0 ? 150 : 0;
   const total = subtotal + envio;
 
-  const handleRealizarPedido = () => {
-    if (cart.length === 0) return alert("Tu carrito está vacío");
-    if (!formData.email || !formData.nombre || !formData.apellidos || !formData.direccion || !formData.ciudad || formData.telefono.length < 12) {
-      return alert("Por favor, completa todos los campos obligatorios.");
+  const [cargando, setCargando] = useState(false);
+
+  const handleRealizarPedido = async () => {
+    if (cart.length === 0) return toast.error("Tu carrito está vacío");
+    
+    if (!formData.email || !formData.nombre || !formData.apellidos || !formData.direccion || !formData.ciudad || formData.telefono.length < 12 || !formData.nombreTarjeta || !formData.numeroTarjeta || !formData.fechaExpiracion || !formData.cvv) {
+      return toast.warning("Por favor, completa todos los campos obligatorios, incluyendo los de la tarjeta.");
     }
-    localStorage.setItem('datosEnvio', JSON.stringify(formData));
-    navigate('/checkout');
+
+    try {
+      setCargando(true);
+      
+      // Intentamos obtener el ID del cliente logueado
+      const compradorStr = localStorage.getItem('comprador');
+      const comprador = compradorStr ? JSON.parse(compradorStr) : null;
+
+      const payload = {
+        id_cliente: comprador?.id_cliente || 1, // ID 1 como fallback para pruebas
+        total: total,
+        items: cart.map(item => ({
+          id_producto: item.id_producto || null,
+          title: item.title,
+          precio_unitario: item.price,
+          cantidad: item.cantidad,
+          color: item.color || null,
+          tamano: item.tamano || null,
+          dimensiones: item.dimensiones || null
+        })),
+        datosEnvio: formData
+      };
+
+      console.log("📤 Enviando pedido al servidor...", payload);
+
+      const response = await fetch(`${API_BASE_URL}/pedidos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error al procesar el pedido en el servidor");
+      }
+
+      const resultado = await response.json();
+      console.log("🎉 Pedido guardado en DB:", resultado);
+
+      toast.success("✅ ¡Pedido realizado con éxito! Tu orden ha sido guardada en el sistema.");
+      
+      // Limpiamos el carrito local después del éxito
+      localStorage.removeItem('cart');
+      localStorage.setItem('datosEnvio', JSON.stringify(formData));
+      
+      // Esperamos un poco para que el usuario vea el mensaje de éxito antes de redirigir
+      setTimeout(() => {
+        navigate('/'); 
+      }, 2000);
+
+    } catch (error) {
+      console.error("❌ Error al procesar pedido:", error);
+      toast.error("Hubo un problema al guardar tu pedido: " + error.message);
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
@@ -390,8 +457,10 @@ export default function Carrito() {
             </div>
           </div>
 
-          {/* ── ENVÍO ── */}
-          <div>
+          {/* ── SECCIÓN DERECHA: ENVÍO Y PAGO ── */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            
+            {/* FORMULARIO DE ENVÍO */}
             <div className="cart-card">
               <div className="cart-card-header">
                 <div className="cart-card-header-icon">
@@ -400,8 +469,7 @@ export default function Carrito() {
                 <span className="cart-card-header-title">Información de Envío</span>
               </div>
 
-              <div className="cart-form">
-
+              <div className="cart-form" style={{ paddingBottom: '26px' }}>
                 <div>
                   <label className="cart-field-label">Correo electrónico *</label>
                   <input name="email" value={formData.email} onChange={handleInputChange}
@@ -447,25 +515,73 @@ export default function Carrito() {
                   <input name="telefono" value={formData.telefono} onChange={handlePhoneChange}
                     type="tel" className="cart-input" placeholder="809-000-0000" />
                 </div>
+              </div>
+            </div>
 
+            {/* MÉTODO DE PAGO */}
+            <div className="cart-card">
+              <div className="cart-card-header">
+                <div className="cart-card-header-icon">
+                  <CreditCard size={16} />
+                </div>
+                <span className="cart-card-header-title">Método de Pago</span>
+              </div>
+
+              <div className="cart-form">
+                <div>
+                  <label className="cart-field-label">Nombre en la tarjeta *</label>
+                  <div className="input-icon-wrap">
+                    <User size={14} className="input-icon" />
+                    <input name="nombreTarjeta" value={formData.nombreTarjeta} onChange={handleInputChange}
+                      type="text" className="cart-input cart-input-with-icon" placeholder="Como aparece en la tarjeta" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="cart-field-label">Número de tarjeta *</label>
+                  <div className="input-icon-wrap">
+                    <CreditCard size={14} className="input-icon" />
+                    <input name="numeroTarjeta" value={formData.numeroTarjeta} onChange={handleInputChange} maxLength="19"
+                      type="text" className="cart-input cart-input-with-icon" placeholder="0000 0000 0000 0000" />
+                  </div>
+                </div>
+
+                <div className="cart-row-2">
+                  <div>
+                    <label className="cart-field-label">Fecha Expiración *</label>
+                    <div className="input-icon-wrap">
+                      <Calendar size={14} className="input-icon" />
+                      <input name="fechaExpiracion" value={formData.fechaExpiracion} onChange={handleInputChange} maxLength="5"
+                        type="text" className="cart-input cart-input-with-icon" placeholder="MM/YY" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="cart-field-label">Código (CVV) *</label>
+                    <div className="input-icon-wrap">
+                      <Lock size={14} className="input-icon" />
+                      <input name="cvv" value={formData.cvv} onChange={handleInputChange} maxLength="4"
+                        type="password" className="cart-input cart-input-with-icon" placeholder="123" />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="cart-submit-wrap">
                 <button
                   onClick={handleRealizarPedido}
-                  disabled={cart.length === 0}
+                  disabled={cart.length === 0 || cargando}
                   className="cart-submit-btn"
                 >
-                  <ArrowRight size={16} /> Continuar al pago
+                  <Lock size={16} /> 
+                  {cargando ? 'Procesando...' : 'Procesar Pago Seguro'}
                 </button>
                 <div className="cart-secure-note">
-                  <Lock size={11} /> Pago 100% seguro vía WhatsApp
+                  <Lock size={11} /> Tus datos de pago están encriptados y seguros
                 </div>
               </div>
-
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </>

@@ -1,9 +1,10 @@
-import { Facebook, Instagram, Globe2Icon, MapPin, Phone, Mail } from "lucide-react";
+import { Globe2Icon, MapPin, Phone, Mail } from "lucide-react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#0d1b2a', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      
+    <footer style={{ background: '#162032', borderTop: '1px solid rgba(255,255,255,0.08)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+
       {/* TOP SECTION */}
       <div style={{
         maxWidth: 1200, margin: '0 auto',
@@ -11,16 +12,16 @@ export default function Footer() {
         display: 'grid',
         gridTemplateColumns: '1.5fr 1fr 1fr',
         gap: 48,
-        borderBottom: '1px solid rgba(255,255,255,0.06)'
+        borderBottom: '1px solid rgba(255,255,255,0.08)'
       }}>
 
         {/* BRAND COL */}
         <div>
           <div style={{
-            fontSize: 24, fontWeight: 800, color: 'white',
+            fontSize: 24, fontWeight: 800, color: '#f1f5f9',
             letterSpacing: '-0.5px', marginBottom: 14
           }}>
-            GT<span style={{ color: '#E63946' }}>G</span>
+            GT<span style={{ color: '#ef4444' }}>G</span>
             <span style={{ color: 'rgba(255,255,255,0.2)', fontWeight: 400 }}>.</span>
           </div>
           <p style={{
@@ -33,21 +34,9 @@ export default function Footer() {
           {/* SOCIAL ICONS */}
           <div style={{ display: 'flex', gap: 10 }}>
             {[
-              {
-                href: "https://www.facebook.com/GTGPlasticPackaging/",
-                icon: <Facebook size={15} />,
-                label: "Facebook"
-              },
-              {
-                href: "https://www.instagram.com/gtgplasticpackaging/",
-                icon: <Instagram size={15} />,
-                label: "Instagram"
-              },
-              {
-                href: "https://www.google.com/maps/place/Global+Technology+Group/@19.474836,-70.734787",
-                icon: <Globe2Icon size={15} />,
-                label: "Ubicación"
-              },
+              { href: "https://www.facebook.com/GTGPlasticPackaging/", icon: <FaFacebook size={15} />, label: "Facebook" },
+              { href: "https://www.instagram.com/gtgplasticpackaging/", icon: <FaInstagram size={15} />, label: "Instagram" },
+              { href: "https://www.google.com/maps/place/Global+Technology+Group/@19.474836,-70.734787", icon: <Globe2Icon size={15} />, label: "Ubicación" },
             ].map(({ href, icon, label }) => (
               <a
                 key={label}
@@ -58,21 +47,21 @@ export default function Footer() {
                 style={{
                   width: 36, height: 36, borderRadius: 10,
                   background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.1)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'rgba(255,255,255,0.5)',
+                  color: 'rgba(255,255,255,0.45)',
                   textDecoration: 'none',
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = '#1B3A5C';
-                  e.currentTarget.style.color = 'white';
-                  e.currentTarget.style.borderColor = '#1B3A5C';
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
+                  e.currentTarget.style.color = '#f1f5f9';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-                  e.currentTarget.style.color = 'rgba(255,255,255,0.5)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.color = 'rgba(255,255,255,0.45)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
                 }}
               >
                 {icon}
@@ -99,7 +88,7 @@ export default function Footer() {
                   textDecoration: 'none', fontWeight: 500,
                   transition: 'color 0.2s'
                 }}
-                onMouseEnter={e => e.currentTarget.style.color = 'white'}
+                onMouseEnter={e => e.currentTarget.style.color = '#f1f5f9'}
                 onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}
               >
                 {link}
@@ -124,11 +113,11 @@ export default function Footer() {
             ].map(({ icon, text }) => (
               <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{
-                  color: '#1B3A5C',
-                  background: 'rgba(27,58,92,0.35)',
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.12)',
                   width: 28, height: 28, borderRadius: 8,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, color: '#60a5fa'
+                  flexShrink: 0, color: '#06b6d4'
                 }}>
                   {icon}
                 </div>

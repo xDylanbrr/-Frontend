@@ -9,16 +9,16 @@ const DespachoIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill=
 const OrdenesIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>;
 const ProcesoIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>;
 const TerminadoIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>;
+const ReciclajeIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M7 2h10l4 12H3L7 2z"/><path d="M5 14l2 8h10l2-8"/><path d="M15 6H9"/><path d="M10 6l-1 4"/><path d="M14 6l1 4"/></svg>;
 
-// 🔥 AQUÍ ESTÁ EL CAMBIO LÓGICO DE ORDEN
 const adminLinks = [
   { to: "/administracion/empleados", label: "Gestión",    Icon: GestionIcon },
+  { to: "/administracion/pedidos-clientes", label: "Trazabilidad", Icon: OrdenesIcon },
   { to: "/produccion/orden-pedido",  label: "Órdenes",    Icon: OrdenesIcon },
   { to: "/produccion/proceso",       label: "Proceso",    Icon: ProcesoIcon },
   { to: "/produccion/terminado",     label: "Terminados", Icon: TerminadoIcon }, 
-  { to: "/logistica/empaque",        label: "Empaque",    Icon: EmpaqueIcon },
-  { to: "/logistica/transporte",     label: "Logística",  Icon: LogisticaIcon },
-  { to: "/logistica/despacho",       label: "Despacho",   Icon: DespachoIcon },
+  { to: "/produccion/reciclaje",    label: "Reciclaje",  Icon: ReciclajeIcon },
+  { to: "/logistica",                label: "Logística",  Icon: LogisticaIcon },
 ];
 
 const publicLinks = [
@@ -49,21 +49,22 @@ export default function Header({ user, setUser }) {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-        .gtg-header * { font-family: 'Sora', sans-serif; box-sizing: border-box; }
+        .gtg-header * { font-family: 'Plus Jakarta Sans', sans-serif; box-sizing: border-box; }
 
         /* ── base ── */
         .gtg-header {
           position: sticky; top: 0; z-index: 100;
-          background: #1B3A5C;
-          border-bottom: 1px solid rgba(255,255,255,0.08);
+          background: #1e293b;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         .gtg-inner {
           max-width: 1400px; margin: 0 auto;
           padding: 0 24px;
-          height: 64px;
+          height: 68px;
           display: flex; align-items: center; justify-content: space-between; gap: 32px;
         }
 
@@ -71,46 +72,45 @@ export default function Header({ user, setUser }) {
         .gtg-logo {
           text-decoration: none;
           display: flex; align-items: center; gap: 2px;
-          font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+          font-size: 24px; font-weight: 800; letter-spacing: -0.8px;
           flex-shrink: 0;
         }
         .gtg-logo .r { color: #E63946; }
-        .gtg-logo .w { color: #E8F0F8; }
+        .gtg-logo .w { color: #f8fafc; }
 
         /* ── public nav ── */
         .gtg-public-nav {
-          display: flex; align-items: center; gap: 2px;
+          display: flex; align-items: center; gap: 4px;
         }
         .gtg-nav-link {
           text-decoration: none;
-          font-size: 13px; font-weight: 600;
-          color: rgba(232,240,248,0.65);
-          padding: 6px 14px; border-radius: 8px;
-          transition: color .2s, background .2s;
+          font-size: 14px; font-weight: 600;
+          color: #94a3b8;
+          padding: 8px 16px; border-radius: 10px;
+          transition: all .2s;
           white-space: nowrap;
         }
-        .gtg-nav-link:hover { color: #E8F0F8; background: rgba(255,255,255,0.1); }
-        .gtg-nav-link.active { color: #E8F0F8; background: rgba(255,255,255,0.12); }
+        .gtg-nav-link:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.05); }
+        .gtg-nav-link.active { color: #ffffff; background: #E63946; }
 
         /* ── admin panel ── */
         .gtg-admin-trigger {
           position: relative;
         }
         .gtg-admin-btn {
-          display: flex; align-items: center; gap: 6px;
-          background: rgba(230,57,70,0.18);
-          border: 1px solid rgba(230,57,70,0.4);
+          display: flex; align-items: center; gap: 8px;
+          background: rgba(230, 57, 70, 0.15);
+          border: 1px solid rgba(230, 57, 70, 0.4);
           color: #fca5a5;
-          font-size: 12px; font-weight: 700;
-          padding: 6px 14px; border-radius: 8px;
+          font-size: 13px; font-weight: 700;
+          padding: 8px 18px; border-radius: 12px;
           cursor: pointer; letter-spacing: 0.3px;
           transition: all .2s; white-space: nowrap;
-          font-family: 'Sora', sans-serif;
+          font-family: inherit;
         }
         .gtg-admin-btn:hover, .gtg-admin-btn.open {
-          background: rgba(230,57,70,0.3);
-          border-color: rgba(230,57,70,0.65);
-          color: #ffd0d3;
+          background: rgba(230, 57, 70, 0.25);
+          color: #ffffff;
         }
         .gtg-admin-btn svg {
           width: 12px; height: 12px;
@@ -119,124 +119,119 @@ export default function Header({ user, setUser }) {
         .gtg-admin-btn.open svg { transform: rotate(180deg); }
 
         .gtg-admin-dropdown {
-          position: absolute; top: calc(100% + 10px); left: 50%;
+          position: absolute; top: calc(100% + 12px); left: 50%;
           transform: translateX(-50%);
-          background: #F4F6F9;
-          border: 1px solid #dce3ec;
-          border-radius: 14px;
-          padding: 8px;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 16px;
+          padding: 10px;
           display: grid; grid-template-columns: 1fr 1fr 1fr;
-          gap: 4px; width: 300px;
-          box-shadow: 0 16px 48px rgba(27,58,92,0.2);
-          animation: dropIn .18s ease;
+          gap: 6px; width: 340px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+          animation: dropIn .2s ease;
+          z-index: 200;
         }
         @keyframes dropIn {
-          from { opacity:0; transform: translateX(-50%) translateY(-8px); }
+          from { opacity:0; transform: translateX(-50%) translateY(8px); }
           to   { opacity:1; transform: translateX(-50%) translateY(0); }
         }
         .gtg-admin-item {
           text-decoration: none;
-          display: flex; flex-direction: column; align-items: center; gap: 6px;
-          padding: 12px 8px; border-radius: 10px;
-          color: #4A6582;
-          font-size: 11px; font-weight: 600;
-          transition: all .15s;
+          display: flex; flex-direction: column; align-items: center; gap: 8px;
+          padding: 14px 8px; border-radius: 12px;
+          color: #475569;
+          font-size: 12px; font-weight: 600;
+          transition: all .2s;
           text-align: center;
         }
-        .gtg-admin-item:hover { background: #dce6f0; color: #1B3A5C; }
-        .gtg-admin-item.active { background: #fde8ea; color: #E63946; }
-        .gtg-admin-item svg { flex-shrink: 0; }
+        .gtg-admin-item:hover { background: #f1f5f9; color: #0f172a; }
+        .gtg-admin-item.active { background: #fff1f2; color: #E63946; }
+        .gtg-admin-item svg { width: 20px; height: 20px; }
 
         /* ── divider ── */
         .gtg-sep {
-          width: 1px; height: 28px;
-          background: rgba(255,255,255,0.15);
+          width: 1px; height: 32px;
+          background: rgba(255, 255, 255, 0.1);
           flex-shrink: 0;
         }
 
         /* ── right section ── */
-        .gtg-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .gtg-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
 
         .gtg-user {
-          display: flex; align-items: center; gap: 10px;
+          display: flex; align-items: center; gap: 12px;
         }
         .gtg-avatar-wrap {
           position: relative;
         }
         .gtg-avatar {
-          width: 36px; height: 36px; border-radius: 50%;
+          width: 40px; height: 40px; border-radius: 50%;
           object-fit: cover;
-          border: 2px solid rgba(232,240,248,0.3);
+          border: 2px solid rgba(255, 255, 255, 0.2);
           display: block;
-          transition: border-color .2s, transform .2s;
+          transition: all .2s;
           cursor: pointer;
         }
-        .gtg-avatar:hover { border-color: #E63946; transform: scale(1.06); }
+        .gtg-avatar:hover { border-color: #E63946; transform: scale(1.05); }
 
-        .gtg-user-info { display: flex; flex-direction: column; line-height: 1; gap: 3px; }
+        .gtg-user-info { display: flex; flex-direction: column; line-height: 1.2; }
         .gtg-role {
-          font-size: 9px; font-weight: 800; letter-spacing: 1.2px;
+          font-size: 9px; font-weight: 800; letter-spacing: 1px;
           text-transform: uppercase; color: #fca5a5;
         }
-        .gtg-name { font-size: 13px; font-weight: 700; color: #E8F0F8; }
+        .gtg-name { font-size: 14px; font-weight: 700; color: #f8fafc; }
 
         .gtg-logout {
           background: transparent;
-          border: 1px solid rgba(232,240,248,0.2);
-          color: rgba(232,240,248,0.6);
-          font-size: 11px; font-weight: 700;
-          padding: 6px 14px; border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #94a3b8;
+          font-size: 12px; font-weight: 700;
+          padding: 8px 16px; border-radius: 10px;
           cursor: pointer; transition: all .2s;
-          font-family: 'Sora', sans-serif;
-          letter-spacing: 0.3px;
-          white-space: nowrap;
+          font-family: inherit;
         }
         .gtg-logout:hover {
           border-color: #E63946; color: #fca5a5;
-          background: rgba(230,57,70,0.12);
+          background: rgba(230, 57, 70, 0.1);
         }
 
         .gtg-login {
           text-decoration: none;
           background: #E63946; color: #fff;
-          font-size: 12px; font-weight: 700;
-          padding: 8px 20px; border-radius: 8px;
-          transition: background .2s, transform .15s;
-          letter-spacing: 0.3px;
+          font-size: 14px; font-weight: 700;
+          padding: 10px 24px; border-radius: 12px;
+          transition: all .2s;
+          box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
         }
-        .gtg-login:hover { background: #c62b39; transform: scale(1.03); }
+        .gtg-login:hover { background: #c62b39; transform: translateY(-1px); }
 
         /* ── cart icon ── */
         .gtg-cart-link {
           position: relative;
           text-decoration: none;
           display: flex; align-items: center; justify-content: center;
-          width: 38px; height: 38px;
-          border-radius: 10px;
-          color: rgba(232,240,248,0.65);
-          transition: color .2s, background .2s;
+          width: 42px; height: 42px;
+          border-radius: 12px;
+          color: #94a3b8;
+          transition: all .2s;
+          background: rgba(255, 255, 255, 0.05);
         }
-        .gtg-cart-link:hover { color: #E8F0F8; background: rgba(255,255,255,0.1); }
-        .gtg-cart-link.active { color: #E8F0F8; background: rgba(255,255,255,0.12); }
+        .gtg-cart-link:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.1); }
+        .gtg-cart-link.active { color: #ffffff; background: #E63946; }
         .gtg-cart-badge {
-          position: absolute; top: 2px; right: 1px;
-          min-width: 16px; height: 16px;
+          position: absolute; top: -4px; right: -4px;
+          min-width: 18px; height: 18px;
           background: #E63946; color: #fff;
-          font-size: 9px; font-weight: 800;
-          border-radius: 8px;
+          font-size: 10px; font-weight: 800;
+          border-radius: 9px;
           display: flex; align-items: center; justify-content: center;
-          padding: 0 4px;
-          line-height: 1;
-          border: 2px solid #1B3A5C;
-          animation: cartBadgePop .25s ease;
-        }
-        @keyframes cartBadgePop {
-          from { transform: scale(0); } to { transform: scale(1); }
+          padding: 0 5px;
+          border: 2px solid #1e293b;
         }
 
         /* ── overlay ── */
         .gtg-overlay {
-          position: fixed; inset: 0; z-index: 99;
+          position: fixed; inset: 0; z-index: 150;
         }
       `}</style>
 
@@ -281,7 +276,7 @@ export default function Header({ user, setUser }) {
                 {adminOpen && (
                   <>
                     <div className="gtg-overlay" onClick={() => setAdminOpen(false)} />
-                    <div className="gtg-admin-dropdown" style={{ zIndex: 200 }}>
+                    <div className="gtg-admin-dropdown">
                       {adminLinks.map(({ to, label, Icon }) => (
                         <Link
                           key={to}
@@ -300,46 +295,46 @@ export default function Header({ user, setUser }) {
             </>
           )}
 
-          {/* Cart icon */}
-          <Link
-            to="/carrito"
-            className={`gtg-cart-link${isActive("/carrito") ? " active" : ""}`}
-            title="Carrito"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-            </svg>
-            {cartCount > 0 && (
-              <span className="gtg-cart-badge">{cartCount}</span>
-            )}
-          </Link>
-
-          {/* Right — user / login */}
+          {/* Right section */}
           <div className="gtg-right">
+            {/* Cart icon */}
+            <Link
+              to="/carrito"
+              className={`gtg-cart-link${isActive("/carrito") ? " active" : ""}`}
+              title="Carrito"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              </svg>
+              {cartCount > 0 && (
+                <span className="gtg-cart-badge">{cartCount}</span>
+              )}
+            </Link>
+
             {user ? (
               <div className="gtg-user">
+                <div className="gtg-user-info text-right">
+                  <span className="gtg-role">{user.role}</span>
+                  <span className="gtg-name">{user.data?.nombre?.split(" ")[0] || "Usuario"}</span>
+                </div>
                 <Link to="/perfil" className="gtg-avatar-wrap">
                   <img
                     src={user.data?.profileImageUrl}
                     className="gtg-avatar"
                     alt="perfil"
                     onError={(e) => {
-                      e.target.src = `https://ui-avatars.com/api/?name=${user.data?.nombre}&background=1B3A5C&color=E8F0F8`;
+                      e.target.src = `https://ui-avatars.com/api/?name=${user.data?.nombre}&background=E63946&color=ffffff&bold=true`;
                     }}
                   />
                 </Link>
-                <div className="gtg-user-info">
-                  <span className="gtg-role">{user.role}</span>
-                  <span className="gtg-name">{user.data?.nombre?.split(" ")[0] || "Usuario"}</span>
-                </div>
                 <button className="gtg-logout" onClick={handleLogout}>
                   Salir
                 </button>
               </div>
             ) : (
               <Link to="/login-gtg" className="gtg-login">
-                Iniciar sesión
+                Iniciar Sesión
               </Link>
             )}
           </div>

@@ -70,8 +70,23 @@ function EmpleadoForm({ alEnviar, empleadoEditar, cancelarEditar }) {
       <input type="text" name="telefono" value={form.telefono} onChange={handleChange} placeholder="Teléfono" className="border p-2 rounded"/>
       <input type="email" name="correo" value={form.correo} onChange={handleChange} placeholder="Correo" className="border p-2 rounded"/>
       <input type="text" name="puesto" value={form.puesto} onChange={handleChange} placeholder="Puesto" className="border p-2 rounded"/>
-      <input type="date" name="fecha_contratacion" value={form.fecha_contratacion} onChange={handleChange} placeholder="Fecha Contratación" className="border p-2 rounded"/>
-      <input type="number" name="departamento_id" value={form.departamento_id} onChange={handleChange} placeholder="ID Departamento" className="border p-2 rounded"/>
+      <div className="flex flex-col">
+        <label className="text-sm font-bold text-gray-700 mb-1">Fecha de Contratación</label>
+        <input type="date" name="fecha_contratacion" value={form.fecha_contratacion} onChange={handleChange} className="border p-2 rounded w-full"/>
+      </div>
+      
+      {/* SOLUCIÓN: Menú desplegable para asegurar IDs válidos */}
+      <select 
+        name="departamento_id" 
+        value={form.departamento_id} 
+        onChange={handleChange} 
+        className="border p-2 rounded bg-white text-gray-700"
+      >
+        <option value="">Seleccione un Departamento...</option>
+        <option value="1">Producción</option>
+        <option value="2">Logística</option>
+        {/* Si tienes más departamentos en tu DB (ej. Ventas, RRHH), agrégalos aquí con su ID */}
+      </select>
 
       <div className="flex gap-2">
         <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">

@@ -24,13 +24,9 @@ const TransportePage = () => {
     }, []);
 
     return (
-        <div className="container mx-auto p-4 md:p-6 max-w-7xl">
-            <div className="mb-6">
-                <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Módulo de Logística</h1>
-                <p className="text-gray-500 mt-1 text-lg">Gestión de flotilla y transportes de salida.</p>
-            </div>
+        <div className="container mx-auto p-4 md:p-8 max-w-7xl">
 
-            <TransporteForm onGuardado={cargarDatos} />
+            <TransporteForm onGuardado={cargarDatos} historialTransportes={transportes} />
 
             {cargando ? (
                 <div className="flex justify-center items-center py-12">

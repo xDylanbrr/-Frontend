@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../components/CartContext';
+import { toast } from 'react-toastify';
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -12,7 +13,7 @@ const css = `
 
   /* HERO */
   .pf-hero {
-    background: #1B3A5C;
+    background: #c1121f;
     padding: 48px 40px 56px;
     position: relative; overflow: hidden;
   }
@@ -46,7 +47,7 @@ const css = `
     letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 10px;
     position: relative; z-index: 1;
   }
-  .pf-hero-title span { color: #E63946; }
+  .pf-hero-title span { color: #ffffff; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 4px; }
   .pf-hero-sub {
     font-size: 14px; color: rgba(255,255,255,0.4);
     font-weight: 400; position: relative; z-index: 1;
@@ -66,8 +67,8 @@ const css = `
   .pf-preview {
     background: white;
     border-radius: 24px;
-    border: 1px solid rgba(27,58,92,0.06);
-    box-shadow: 0 4px 20px rgba(27,58,92,0.06);
+    border: 1px solid rgba(30,27,75,0.06);
+    box-shadow: 0 4px 20px rgba(30,27,75,0.06);
     padding: 32px 24px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
@@ -87,19 +88,19 @@ const css = `
   .pf-card {
     background: white;
     border-radius: 20px;
-    border: 1px solid rgba(27,58,92,0.06);
-    box-shadow: 0 4px 16px rgba(27,58,92,0.04);
+    border: 1px solid rgba(30,27,75,0.06);
+    box-shadow: 0 4px 16px rgba(30,27,75,0.04);
     padding: 22px 24px;
   }
   .pf-card-title {
-    font-size: 11px; font-weight: 800; color: #1B3A5C;
+    font-size: 11px; font-weight: 800; color: #1e1b4b;
     text-transform: uppercase; letter-spacing: 0.1em;
     margin-bottom: 18px;
     display: flex; align-items: center; gap: 8px;
   }
   .pf-card-title-dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: #E63946; flex-shrink: 0;
+    background: #c1121f; flex-shrink: 0;
   }
 
   /* INPUTS */
@@ -117,8 +118,8 @@ const css = `
     box-sizing: border-box;
   }
   .pf-input:focus {
-    border-color: #1B3A5C;
-    box-shadow: 0 0 0 3px rgba(27,58,92,0.08);
+    border-color: #c1121f;
+    box-shadow: 0 0 0 3px rgba(193,18,31,0.08);
   }
   .pf-select {
     width: 100%; padding: 11px 14px;
@@ -129,7 +130,7 @@ const css = `
     transition: border-color 0.2s;
     box-sizing: border-box;
   }
-  .pf-select:focus { border-color: #1B3A5C; }
+  .pf-select:focus { border-color: #c1121f; }
 
   /* RANGE SLIDER */
   .pf-range {
@@ -139,9 +140,9 @@ const css = `
   }
   .pf-range::-webkit-slider-thumb {
     appearance: none; width: 18px; height: 18px;
-    background: #1B3A5C; border-radius: 50%;
+    background: #c1121f; border-radius: 50%;
     border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(27,58,92,0.3);
+    box-shadow: 0 2px 8px rgba(193,18,31,0.3);
     cursor: pointer;
   }
 
@@ -157,7 +158,7 @@ const css = `
   .pf-color-btn:hover { transform: scale(1.1); }
   .pf-color-btn.active {
     transform: scale(1.2);
-    box-shadow: 0 0 0 2px #1B3A5C, 0 4px 12px rgba(27,58,92,0.25);
+    box-shadow: 0 0 0 2px #c1121f, 0 4px 12px rgba(193,18,31,0.25);
   }
   .pf-color-label {
     font-size: 10px; color: #94a3b8; font-weight: 600; margin-top: 6px;
@@ -173,7 +174,7 @@ const css = `
     transition: all 0.15s; font-family: 'Plus Jakarta Sans', sans-serif;
   }
   .pf-pos-btn.active {
-    border-color: #1B3A5C; background: #eff6ff; color: #1B3A5C;
+    border-color: #c1121f; background: #fff0f1; color: #c1121f;
   }
 
   /* FILE INPUT */
@@ -184,10 +185,10 @@ const css = `
     border-radius: 12px; cursor: pointer;
     transition: border-color 0.2s;
   }
-  .pf-file-wrap:hover { border-color: #1B3A5C; }
+  .pf-file-wrap:hover { border-color: #c1121f; }
   .pf-file-icon {
     width: 36px; height: 36px; border-radius: 10px;
-    background: #e0e7ff; display: flex;
+    background: #fff0f1; display: flex;
     align-items: center; justify-content: center;
     font-size: 16px; flex-shrink: 0;
   }
@@ -196,17 +197,17 @@ const css = `
 
   /* TOTAL BAR */
   .pf-total {
-    background: #1B3A5C;
+    background: #111827;
     border-radius: 20px; padding: 24px 28px;
     display: flex; align-items: center; justify-content: space-between;
-    box-shadow: 0 8px 32px rgba(27,58,92,0.25);
+    box-shadow: 0 8px 32px rgba(17,24,39,0.25);
     position: relative; overflow: hidden;
   }
   .pf-total::before {
     content: ''; position: absolute;
     top: -30px; right: -30px;
     width: 100px; height: 100px; border-radius: 50%;
-    background: rgba(230,57,70,0.15);
+    background: rgba(255,255,255,0.03);
   }
   .pf-total-label {
     font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.4);
@@ -216,17 +217,17 @@ const css = `
     font-size: 32px; font-weight: 800; color: white; line-height: 1;
   }
   .pf-confirm-btn {
-    background: #E63946; color: white;
+    background: #c1121f; color: white;
     padding: 14px 28px; border-radius: 14px;
     font-size: 14px; font-weight: 800;
     border: none; cursor: pointer;
     font-family: 'Plus Jakarta Sans', sans-serif;
     transition: background 0.2s, transform 0.15s;
-    box-shadow: 0 4px 16px rgba(230,57,70,0.35);
+    box-shadow: 0 4px 16px rgba(193,18,31,0.35);
     position: relative; z-index: 1;
     white-space: nowrap;
   }
-  .pf-confirm-btn:hover { background: #c1121f; transform: translateY(-1px); }
+  .pf-confirm-btn:hover { background: #a00f1a; transform: translateY(-1px); }
 
   @media (max-width: 900px) {
     .pf-main { grid-template-columns: 1fr; padding: 24px 20px 48px; }
@@ -256,8 +257,8 @@ export default function PersonalizarFundas() {
     "Transparente": "rgba(200,225,255,0.4)",
     "Blanco": "#ffffff",
     "Negro": "#1e293b",
-    "Azul": "#1B3A5C",
-    "Rojo": "#E63946"
+    "Azul": "#1e1b4b",
+    "Rojo": "#c1121f"
   };
 
   const precioEstimado = Math.max(
@@ -272,7 +273,7 @@ export default function PersonalizarFundas() {
 
   const handleAddToCart = () => {
     if (cantidad < 100) {
-      alert("⚠️ La cantidad mínima de producción es de 100 unidades.");
+      toast.warning("⚠️ La cantidad mínima de producción es de 100 unidades.");
       return;
     }
     addToCart({
@@ -282,7 +283,7 @@ export default function PersonalizarFundas() {
       price: precioEstimado,
       image: logo || URL_BOLSA
     });
-    alert("¡Producto añadido al carrito!");
+    toast.success("✅ ¡Producto personalizado agregado al carrito!");
   };
 
   return (
@@ -313,27 +314,42 @@ export default function PersonalizarFundas() {
                 width: `${Math.min(ancho * 10, 340)}px`,
                 height: `${Math.min(alto * 10, 440)}px`,
                 maxWidth: '100%',
-                backgroundColor: coloresMap[color],
+                backgroundColor: '#ffffff',
                 borderRadius: 16,
                 position: 'relative',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: 'inset 0 0 24px rgba(0,0,0,0.06)',
-                border: color === 'Blanco' ? '1px solid #e2e8f0' : 'none',
-                transition: 'all 0.3s ease'
+                border: '1px solid #e2e8f0',
+                transition: 'all 0.3s ease',
+                overflow: 'hidden'
               }}
             >
+              {/* Filtro SVG para colorear la imagen */}
+              <svg width="0" height="0" style={{ position: 'absolute', visibility: 'hidden' }}>
+                <defs>
+                  <filter id={`bag-tint-${color}`}>
+                    <feFlood floodColor={coloresMap[color]} result="floodColor" />
+                    <feComposite in="floodColor" in2="SourceGraphic" operator="in" result="mask" />
+                    <feBlend in="mask" in2="SourceGraphic" mode="multiply" />
+                  </filter>
+                </defs>
+              </svg>
+
+              {/* Imagen Base (Funda Blanca) con Filtro SVG */}
               <img
                 src={URL_BOLSA}
-                alt="Funda"
+                alt="Funda Base"
                 style={{
                   position: 'absolute', inset: 0,
                   width: '100%', height: '100%',
                   objectFit: 'contain',
-                  mixBlendMode: 'multiply',
-                  opacity: color === 'Blanco' ? 1 : 0.85,
-                  pointerEvents: 'none'
+                  filter: color !== 'Blanco' ? `url(#bag-tint-${color})` : 'none',
+                  opacity: color !== 'Blanco' ? 0.9 : 1,
+                  pointerEvents: 'none',
+                  transition: 'opacity 0.3s ease'
                 }}
               />
+
               {logo && (
                 <div style={{
                   position: 'absolute', zIndex: 20,
@@ -437,7 +453,7 @@ export default function PersonalizarFundas() {
               <div style={{ marginBottom: 20 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <label className="pf-label">Calibre</label>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#1B3A5C' }}>{calibre}μ</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#c1121f' }}>{calibre}μ</span>
                 </div>
                 <input
                   type="range" min="20" max="200" value={calibre}
@@ -447,7 +463,7 @@ export default function PersonalizarFundas() {
               </div>
 
               <div style={{ paddingTop: 16, borderTop: '1px solid #f1f5f9' }}>
-                <label className="pf-label">Cantidad de unidades <span style={{ color: '#E63946' }}>(mín. 100)</span></label>
+                <label className="pf-label">Cantidad de unidades <span style={{ color: '#c1121f' }}>(mín. 100)</span></label>
                 <input
                   type="number" value={cantidad} min="100"
                   onChange={(e) => setCantidad(Number(e.target.value))}

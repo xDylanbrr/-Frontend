@@ -1,5 +1,5 @@
-// src/services/logistica/empaque.service.js
-const API_URL = 'https://backend-m3nj.onrender.com/api/logistica/empaque';
+import API_BASE_URL from '../../apiConfig';
+const API_URL = `${API_BASE_URL}/logistica/empaque`;
 
 export const getEmpaques = async () => {
     try {
@@ -55,6 +55,22 @@ export const eliminarEmpaque = async (id) => {
         return data;
     } catch (error) {
         console.error("Error en eliminarEmpaque:", error);
+        throw error;
+    }
+};
+
+export const actualizarEmpaque = async (id, data) => {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || result.message || 'Error al actualizar');
+        return result;
+    } catch (error) {
+        console.error("Error en actualizarEmpaque:", error);
         throw error;
     }
 };

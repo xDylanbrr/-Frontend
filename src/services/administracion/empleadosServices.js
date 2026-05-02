@@ -6,19 +6,16 @@ export const obtenerEmpleados = async () => {
   return res.data.data;
 };
 
-// Crear empleado
 export const crearEmpleado = async (data) => {
   const res = await api.post("/administracion/empleados", data);
   return res.data.data;
 };
 
-// Editar empleado
 export const actualizarEmpleado = async (id, data) => {
   const res = await api.put(`/administracion/empleados/${id}`, data);
   return res.data.data;
 };
 
-// Eliminar empleado
 export const eliminarEmpleado = async (id) => {
   const res = await api.delete(`/administracion/empleados/${id}`);
   return res.data;

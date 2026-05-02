@@ -10,7 +10,7 @@ const css = `
     font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
     display: flex;
-    background: #f0f4f8;
+    background: #ffffff;
     overflow: hidden;
   }
 
@@ -18,7 +18,7 @@ const css = `
   .admin-left {
     width: 420px;
     flex-shrink: 0;
-    background: #1e1b4b;
+    background: #E63946;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -50,7 +50,7 @@ const css = `
     color: white;
     letter-spacing: -1px;
   }
-  .admin-left-logo span { color: #06b6d4; }
+  .admin-left-logo span { color: rgba(255, 255, 255, 0.8); }
 
   .admin-left-body { position: relative; z-index: 1; }
 
@@ -108,7 +108,7 @@ const css = `
     align-items: center;
     justify-content: center;
     padding: 40px;
-    background: #f0f4f8;
+    background: #ffffff;
   }
 
   .admin-card {
@@ -117,8 +117,8 @@ const css = `
     padding: 44px 40px;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 8px 40px rgba(30,27,75,0.10);
-    border: 1px solid rgba(30,27,75,0.06);
+    box-shadow: 0 8px 40px rgba(230,57,70,0.08);
+    border: 1px solid rgba(230,57,70,0.05);
     animation: adminFadeUp 0.5s ease both;
   }
   @keyframes adminFadeUp {
@@ -184,9 +184,9 @@ const css = `
     box-sizing: border-box;
   }
   .admin-input:focus {
-    border-color: #1e1b4b;
+    border-color: #E63946;
     background: white;
-    box-shadow: 0 0 0 4px rgba(30,27,75,0.07);
+    box-shadow: 0 0 0 4px rgba(230,57,70,0.05);
   }
   .admin-input.error {
     border-color: #f87171;
@@ -208,7 +208,7 @@ const css = `
     font-size: 14px;
     transition: color 0.2s;
   }
-  .admin-input-toggle:hover { color: #1e1b4b; }
+  .admin-input-toggle:hover { color: #E63946; }
 
   .admin-error-msg {
     font-size: 11px;
@@ -237,8 +237,8 @@ const css = `
     flex-shrink: 0;
   }
   .admin-remember-box.checked {
-    background: #1e1b4b;
-    border-color: #1e1b4b;
+    background: #E63946;
+    border-color: #E63946;
   }
   .admin-remember-box.checked::after {
     content: '';
@@ -257,7 +257,7 @@ const css = `
   .admin-btn {
     width: 100%;
     padding: 14px;
-    background: #1e1b4b;
+    background: #E63946;
     color: white;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
@@ -271,12 +271,12 @@ const css = `
     gap: 10px;
     letter-spacing: 0.02em;
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 16px rgba(30,27,75,0.25);
+    box-shadow: 0 4px 16px rgba(230,57,70,0.2);
   }
   .admin-btn:hover:not(:disabled) {
-    background: #312e81;
+    background: #DC2626;
     transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(30,27,75,0.30);
+    box-shadow: 0 8px 24px rgba(230,57,70,0.3);
   }
   .admin-btn:active:not(:disabled) { transform: translateY(0); }
   .admin-btn:disabled { opacity: 0.6; cursor: not-allowed; }

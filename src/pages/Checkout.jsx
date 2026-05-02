@@ -3,6 +3,7 @@ import { useCart } from '../components/CartContext';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import { CheckCircle, Package, Mail, User, MapPin, Truck, ShoppingBag, FileText } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -345,25 +346,34 @@ export default function Checkout() {
     doc.save(`Factura_GTG_${pedidoId}.pdf`);
   };
 
+  // 🔥 AQUÍ ESTÁ LA FUNCIÓN CORREGIDA
   const handleFinalizarCompra = async () => {
     if (!datosCliente) return;
     const idFinal = parseInt(datosCliente.id_cliente);
     if (!idFinal || isNaN(idFinal)) {
-      alert("❌ No se detectó tu ID de cliente. Cierra sesión e intenta de nuevo.");
+      toast.error("❌ No se detectó tu ID de cliente. Cierra sesión e intenta de nuevo.");
       return;
     }
     setLoading(true);
     try {
-      // ✅ CAMBIO: Usamos la variable de entorno de Vite para la URL de Render
       const baseUrl = import.meta.env.VITE_API_URL || 'https://backend-m3nj.onrender.com';
+
+      // Limpiamos y formateamos los productos del carrito para que Prisma los entienda.
+      const itemsFormateados = cart.map(item => ({
+        id_producto: parseInt(item.id || item.id_producto || item.productoId), // Aseguramos el ID
+        cantidad: parseInt(item.cantidad),
+        precio_unitario: parseFloat(item.price || item.precio)
+      }));
+
+      console.log("Datos exactos que se envían:", itemsFormateados);
 
       const response = await fetch(`${baseUrl}/api/pedidos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           id_cliente: idFinal, 
-          total, 
-          items: cart, 
+          total: total, 
+          items: itemsFormateados, // 👈 Enviamos los items ya formateados en lugar del 'cart' crudo
           estado: "Pendiente" 
         })
       });
@@ -375,7 +385,7 @@ export default function Checkout() {
       setSuccess(true);
       setTimeout(() => { clearCart(); localStorage.removeItem('datosEnvio'); navigate('/'); }, 3500);
     } catch (error) {
-      alert("Error: " + error.message);
+      toast.error("Error: " + error.message);
       setLoading(false);
     }
   };
@@ -401,7 +411,7 @@ export default function Checkout() {
           </p>
           <div style={{
             width: 32, height: 32, borderRadius: '50%',
-            border: '3px solid #e2e8f0', borderTopColor: '#1B3A5C',
+            border: '3px solid #e2e8f0', borderTopColor: '#1e1b4b',
             animation: 'ckSpin 0.7s linear infinite', margin: '0 auto'
           }} />
         </div>
@@ -517,7 +527,7 @@ export default function Checkout() {
 
             <div className="ck-summary-items">
               {cart.map((item) => (
-                <div key={item.instanceId} className="ck-summary-item">
+                <div key={item.instanceId || item.id} className="ck-summary-item">
                   <div className="ck-summary-item-img">
                     {item.img || item.image
                       ? <img src={item.img || item.image} alt={item.title} />

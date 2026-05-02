@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { crearPedidoTerminado } from '../../../services/produccion/pedido_terminado.service';
+import API_BASE_URL from '../../../apiConfig';
 
 const PedidoTerminadoForm = ({ onPedidoTerminadoCreado }) => {
-  const [formData, setFormData] = useState({
-    id_produccion: '',
-    id_empleado: '',
-    estado: 'Listo para Empaque'
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem('pedido_terminado_form');
+    return saved ? JSON.parse(saved) : {
+      id_produccion: '',
+      id_empleado: '',
+      estado: 'Listo para empacar'
+    };
   });
 
   const [procesosActivos, setProcesosActivos] = useState([]);
   const [empleados, setEmpleados] = useState([]);
   const [error, setError] = useState(null);
   const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    localStorage.setItem('pedido_terminado_form', JSON.stringify(formData));
+  }, [formData]);
 
   useEffect(() => {
     cargarDatosDesplegables();
@@ -21,8 +29,8 @@ const PedidoTerminadoForm = ({ onPedidoTerminadoCreado }) => {
     try {
       setCargando(true);
       const [resProcesos, resEmpleados] = await Promise.all([
-        fetch('https://backend-m3nj.onrender.com/api/produccion/proceso'), 
-        fetch('https://backend-m3nj.onrender.com/api/administracion/empleados')
+        fetch(`${API_BASE_URL}/produccion/proceso`), 
+        fetch(`${API_BASE_URL}/administracion/empleados`)
       ]);
 
       if (resProcesos.ok && resEmpleados.ok) {
@@ -56,7 +64,8 @@ const PedidoTerminadoForm = ({ onPedidoTerminadoCreado }) => {
     setError(null);
     try {
       await crearPedidoTerminado(formData);
-      setFormData({ id_produccion: '', id_empleado: '', estado: 'Listo para Empaque' });
+      localStorage.removeItem('pedido_terminado_form');
+      setFormData({ id_produccion: '', id_empleado: '', estado: 'Listo para empacar' });
       onPedidoTerminadoCreado(); 
       cargarDatosDesplegables(); 
     } catch (err) {
@@ -86,7 +95,7 @@ const PedidoTerminadoForm = ({ onPedidoTerminadoCreado }) => {
         </div>
         
         <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">Inspector / Supervisor que Certifica</label>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Aprobado por (Control de Calidad)</label>
           <select name="id_empleado" value={formData.id_empleado} onChange={handleChange} required disabled={cargando} className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50">
             <option value="">-- Asigne quién aprueba --</option>
             {empleados.map(emp => (
@@ -96,10 +105,21 @@ const PedidoTerminadoForm = ({ onPedidoTerminadoCreado }) => {
         </div>
 
         <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Línea/Paso de producción</label>
+          <select name="paso_produccion" value={formData.paso_produccion} onChange={handleChange} required className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50">
+            <option value="">-- Seleccione la línea --</option>
+            <option value="Extrusión">Extrusión</option>
+            <option value="Impresión">Impresión</option>
+            <option value="Sellado">Sellado</option>
+            <option value="Corte">Corte</option>
+          </select>
+        </div>
+
+        <div>
           <label className="block text-sm font-bold text-gray-700 mb-1">Estado de Salida</label>
           <select name="estado" value={formData.estado} onChange={handleChange} className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50">
-            <option value="Listo para Empaque">Listo para Empaque</option>
-            <option value="Rechazado - Daño">Rechazado - Daño</option>
+            <option value="Listo para empacar">Listo para empacar</option>
+            <option value="Dañado">Dañado</option>
           </select>
         </div>
 

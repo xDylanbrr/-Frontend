@@ -1,6 +1,5 @@
-// src/services/logistica/transporte.service.js
-
-const API_URL = "https://backend-m3nj.onrender.com/api/logistica/transporte";
+import API_BASE_URL from '../../apiConfig';
+const API_URL = `${API_BASE_URL}/logistica/transporte`;
 
 // Función para traer la lista de transportes (GET)
 export const obtenerTransportes = async () => {

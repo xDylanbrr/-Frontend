@@ -1,5 +1,6 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Eye, Package } from "lucide-react";
+import { ArrowRight, Search, Package } from "lucide-react";
 
 export const productosData = [
   {
@@ -32,7 +33,7 @@ export const productosData = [
     price: 450.00,
     tag: "Variedad",
     img: "https://www.gtg.com.do/media/design/PIGMENTADO-01-min.webp",
-    desc: "Fabricación de bolsas y rollos en polietileno de alta y baja densidad. Disponibles en opciones transparentes o pigmentadas según su requerimiento.",
+    desc: "Fabricación de bolsas y rollos en polietileno de alta y baja densidad. Disponibles en opciones transparentes o pigmentadas.",
   },
   {
     id: 5,
@@ -52,308 +53,108 @@ export const productosData = [
   }
 ];
 
-const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-  .prod-root { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0f4f8; min-height: 100vh; }
-
-  /* HERO */
-  .prod-hero {
-    background: #1B3A5C;
-    padding: 72px 40px 80px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .prod-hero::before {
-    content: '';
-    position: absolute; top: -100px; right: -100px;
-    width: 350px; height: 350px; border-radius: 50%;
-    background: rgba(255,255,255,0.03);
-  }
-  .prod-hero::after {
-    content: '';
-    position: absolute; bottom: -80px; left: -80px;
-    width: 280px; height: 280px; border-radius: 50%;
-    background: rgba(255,255,255,0.03);
-  }
-  .prod-hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 6px 16px; border-radius: 20px;
-    font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5);
-    text-transform: uppercase; letter-spacing: 0.1em;
-    margin-bottom: 20px;
-  }
-  .prod-hero-dot {
-    width: 6px; height: 6px; border-radius: 50%; background: #4ade80;
-    animation: prodPulse 2s ease infinite;
-  }
-  @keyframes prodPulse {
-    0%,100% { opacity: 1; } 50% { opacity: 0.4; }
-  }
-  .prod-hero-title {
-    font-size: 48px; font-weight: 800; color: white;
-    letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px;
-    position: relative; z-index: 1;
-  }
-  .prod-hero-title span { color: #E63946; }
-  .prod-hero-sub {
-    font-size: 16px; color: rgba(255,255,255,0.45);
-    max-width: 480px; margin: 0 auto; line-height: 1.6; font-weight: 400;
-    position: relative; z-index: 1;
-  }
-
-  /* GRID */
-  .prod-grid-section {
-    max-width: 1200px; margin: 0 auto;
-    padding: 60px 40px;
-  }
-  .prod-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  /* CARD */
-  .prod-card {
-    background: white;
-    border-radius: 24px;
-    overflow: hidden;
-    border: 1px solid rgba(27,58,92,0.06);
-    box-shadow: 0 4px 20px rgba(27,58,92,0.06);
-    display: flex; flex-direction: column;
-    text-decoration: none;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .prod-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 48px rgba(27,58,92,0.14);
-  }
-
-  .prod-card-img {
-    position: relative;
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    background: #f8fafc;
-  }
-  .prod-card-img-bg {
-    width: 100%; height: 100%;
-    background-size: cover; background-position: center;
-    transition: transform 0.6s ease;
-  }
-  .prod-card:hover .prod-card-img-bg { transform: scale(1.07); }
-
-  .prod-card-img-overlay {
-    position: absolute; inset: 0;
-    background: rgba(27,58,92,0.5);
-    opacity: 0; transition: opacity 0.3s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .prod-card:hover .prod-card-img-overlay { opacity: 1; }
-  .prod-card-eye {
-    background: white; border-radius: 50%;
-    width: 48px; height: 48px;
-    display: flex; align-items: center; justify-content: center;
-    transform: translateY(8px); transition: transform 0.3s;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  }
-  .prod-card:hover .prod-card-eye { transform: translateY(0); }
-
-  .prod-card-no-img {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
-    color: #94a3b8;
-  }
-
-  .prod-card-tag {
-    position: absolute; top: 14px; left: 14px;
-    background: #1B3A5C; color: white;
-    font-size: 10px; font-weight: 700;
-    padding: 4px 12px; border-radius: 20px;
-    letter-spacing: 0.06em; text-transform: uppercase;
-  }
-
-  .prod-card-body {
-    padding: 24px; flex: 1; display: flex; flex-direction: column;
-  }
-  .prod-card-title {
-    font-size: 17px; font-weight: 700; color: #111827;
-    margin-bottom: 8px; line-height: 1.3;
-    transition: color 0.2s;
-  }
-  .prod-card:hover .prod-card-title { color: #1B3A5C; }
-  .prod-card-desc {
-    font-size: 13px; color: #64748b; line-height: 1.6;
-    font-weight: 400; flex: 1;
-    display: -webkit-box; -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical; overflow: hidden;
-  }
-
-  .prod-card-footer {
-    margin-top: 20px; padding-top: 16px;
-    border-top: 1px solid #f1f5f9;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .prod-card-price-label {
-    font-size: 9px; font-weight: 800; color: #94a3b8;
-    text-transform: uppercase; letter-spacing: 0.15em; display: block; margin-bottom: 2px;
-  }
-  .prod-card-price {
-    font-size: 22px; font-weight: 800; color: #111827; line-height: 1;
-  }
-  .prod-card-btn {
-    width: 40px; height: 40px; border-radius: 13px;
-    background: #1B3A5C; color: white;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, transform 0.15s;
-    flex-shrink: 0;
-  }
-  .prod-card:hover .prod-card-btn { background: #E63946; }
-
-  /* CTA */
-  .prod-cta-section {
-    max-width: 1200px; margin: 0 auto;
-    padding: 0 40px 80px;
-  }
-  .prod-cta {
-    background: #1B3A5C;
-    border-radius: 28px; padding: 64px 48px;
-    text-align: center; position: relative; overflow: hidden;
-  }
-  .prod-cta::before {
-    content: '';
-    position: absolute; top: -60px; right: -60px;
-    width: 240px; height: 240px; border-radius: 50%;
-    background: rgba(230,57,70,0.12);
-  }
-  .prod-cta::after {
-    content: '';
-    position: absolute; bottom: -60px; left: -60px;
-    width: 200px; height: 200px; border-radius: 50%;
-    background: rgba(255,255,255,0.04);
-  }
-  .prod-cta-title {
-    font-size: 36px; font-weight: 800; color: white;
-    letter-spacing: -0.5px; margin-bottom: 12px;
-    position: relative; z-index: 1;
-  }
-  .prod-cta-sub {
-    font-size: 15px; color: rgba(255,255,255,0.45);
-    max-width: 420px; margin: 0 auto 36px;
-    line-height: 1.6; font-weight: 400;
-    position: relative; z-index: 1;
-  }
-  .prod-cta-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: white; color: #1B3A5C;
-    padding: 14px 32px; border-radius: 14px;
-    font-size: 14px; font-weight: 800;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-    position: relative; z-index: 1;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  }
-  .prod-cta-btn:hover { background: #f0f4f8; transform: translateY(-1px); }
-
-  @media (max-width: 900px) {
-    .prod-grid { grid-template-columns: repeat(2,1fr); }
-    .prod-hero-title { font-size: 36px; }
-  }
-  @media (max-width: 600px) {
-    .prod-grid { grid-template-columns: 1fr; }
-    .prod-grid-section, .prod-cta-section { padding: 40px 20px; }
-    .prod-hero { padding: 48px 20px 56px; }
-    .prod-hero-title { font-size: 28px; }
-    .prod-cta { padding: 40px 24px; }
-    .prod-cta-title { font-size: 26px; }
-  }
-`;
-
 export default function Productos() {
   return (
-    <>
-      <style>{css}</style>
-      <main className="prod-root">
+    <main
+      className="min-h-screen w-full font-display flex flex-col text-[#1e293b]"
+      style={{ backgroundColor: "#F1F5F9" }}
+    >
 
-        {/* ── HERO ── */}
-        <section className="prod-hero">
-          <div className="prod-hero-eyebrow">
-            <div className="prod-hero-dot" />
-            Catálogo 2026
-          </div>
-          <h1 className="prod-hero-title">
-            Nuestros <span>Productos</span>
-          </h1>
-          <p className="prod-hero-sub">
-            Soluciones integrales en empaques flexibles para optimizar su cadena de suministro.
-          </p>
-        </section>
-
-        {/* ── GRID ── */}
-        <section className="prod-grid-section">
-          <div className="prod-grid">
+      {/* ── GRID DE PRODUCTOS ── */}
+      <section className="py-24">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {productosData.map((p) => (
-              <Link key={p.id} to={`/producto/${p.id}`} className="prod-card">
-
+              <Link
+                key={p.id}
+                to={`/producto/${p.id}`}
+                className="group flex flex-col bg-white rounded-3xl overflow-hidden transform hover:-translate-y-2 transition-all duration-500 border border-[#e2e8f0] hover:border-[#E63946]/50 shadow-lg hover:shadow-[0_15px_40px_rgba(230,57,70,0.1)]"
+              >
                 {/* IMAGEN */}
-                <div className="prod-card-img">
+                <div className="aspect-[4/3] w-full overflow-hidden relative bg-[#f1f5f9]">
                   {p.img ? (
                     <div
-                      className="prod-card-img-bg"
+                      className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                       style={{ backgroundImage: `url(${p.img})` }}
                     />
                   ) : (
-                    <div className="prod-card-no-img">
-                      <Package size={40} strokeWidth={1.5} />
+                    <div className="w-full h-full flex items-center justify-center text-[#334155]">
+                      <Package size={64} strokeWidth={1} />
                     </div>
                   )}
-                  <div className="prod-card-img-overlay">
-                    <div className="prod-card-eye">
-                      <Eye size={20} color="#1B3A5C" />
+
+                  {/* Overlay hover */}
+                  <div className="absolute inset-0 bg-[#0F172A]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center transform scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 border border-white/20">
+                      <Search size={28} className="text-white" />
                     </div>
                   </div>
-                  <span className="prod-card-tag">{p.tag}</span>
+
+                  {/* Tag badge */}
+                  <span className="absolute top-5 left-5 bg-white/90 backdrop-blur-md border border-[#e2e8f0] text-[#E63946] text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg z-10">
+                    {p.tag}
+                  </span>
                 </div>
 
-                {/* BODY */}
-                <div className="prod-card-body">
-                  <div className="prod-card-title">{p.title}</div>
-                  <p className="prod-card-desc">{p.desc}</p>
+                {/* CUERPO */}
+                <div className="p-8 flex flex-col flex-grow">
+                  <h3 className="font-extrabold text-2xl mb-3 text-[#1e293b] group-hover:text-[#E63946] transition-colors leading-tight">
+                    {p.title}
+                  </h3>
+                  <p className="text-sm text-[#64748B] leading-relaxed line-clamp-2 flex-grow mb-6">
+                    {p.desc}
+                  </p>
 
-                  <div className="prod-card-footer">
+                  <div className="pt-6 border-t border-[#e2e8f0] flex flex-col gap-4">
                     <div>
-                      <span className="prod-card-price-label">Precio inicial</span>
-                      <span className="prod-card-price">RD${p.price.toLocaleString()}</span>
+                      <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest block mb-1">
+                        Precio Unitario
+                      </span>
+                      <span className="text-2xl font-black text-[#1e293b]">
+                        RD${p.price.toLocaleString()}
+                      </span>
                     </div>
-                    <div className="prod-card-btn">
-                      <ArrowRight size={18} />
+
+                    {/* Botón */}
+                    <div className="w-full h-12 rounded-full bg-[#f8fafc] border border-[#e2e8f0] flex items-center justify-center gap-2 text-[#64748B] group-hover:bg-[#E63946] group-hover:text-white group-hover:border-transparent transition-all duration-500 font-bold text-sm shadow-inner group-hover:shadow-[0_5px_15px_rgba(230,57,70,0.2)]">
+                      Ver Detalles
+                      <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </div>
-
               </Link>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── CTA ── */}
-        <section className="prod-cta-section">
-          <div className="prod-cta">
-            <h2 className="prod-cta-title">¿Requiere dimensiones específicas?</h2>
-            <p className="prod-cta-sub">
-              Diseñamos empaques a la medida de sus necesidades técnicas y de marca.
-            </p>
-            <Link to="/personalizar/fundas" className="prod-cta-btn">
-              Solicitar Cotización
-              <ArrowRight size={16} color="#E63946" />
-            </Link>
+      {/* ── CTA ── */}
+      <section className="py-24 border-t border-[#e2e8f0] bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9]">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="bg-white border border-[#e2e8f0] rounded-3xl p-12 md:p-16 text-center relative overflow-hidden shadow-lg">
+
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-[#E63946]/10 blur-3xl" />
+            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-[#E63946]/10 blur-3xl" />
+
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1e293b] mb-6">
+                ¿Requiere dimensiones específicas?
+              </h2>
+              <p className="text-[#64748B] text-lg md:text-xl mb-10 max-w-2xl mx-auto tracking-wide">
+                En GTG diseñamos y fabricamos empaques totalmente a la medida de sus necesidades técnicas y requerimientos de marca.
+              </p>
+              <Link
+                to="/personalizar-fundas"
+                className="inline-flex items-center gap-3 bg-[#E63946] hover:bg-[#DC2626] text-white px-8 py-4 rounded-full font-bold transition-all duration-300 shadow-[0_8px_20px_rgba(230,57,70,0.2)] hover:shadow-[0_8px_25px_rgba(230,57,70,0.3)] transform hover:-translate-y-1"
+              >
+                Solicitar Cotización
+                <ArrowRight size={20} />
+              </Link>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-      </main>
-    </>
+    </main>
   );
 }

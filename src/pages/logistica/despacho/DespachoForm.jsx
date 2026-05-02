@@ -26,7 +26,6 @@ const DespachoForm = ({ onDespachoCreado }) => {
       // Limpiamos el formulario
       setFormData({ id_pedido_terminado: '', id_empleado: '', destino: '', estado: 'Programado' });
       // Notificamos éxito y recargamos tabla
-      alert('¡Despacho registrado y pedido actualizado con éxito!');
       onDespachoCreado(); 
     } catch (err) {
       setError(err.message);

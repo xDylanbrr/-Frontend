@@ -1,6 +1,5 @@
-// src/services/logistica/despacho.service.js
-// ✅ URL Corregida para que coincida con el backend
-const API_URL = 'https://backend-m3nj.onrender.com/api/logistica/despacho'; 
+import API_BASE_URL from '../../apiConfig';
+const API_URL = `${API_BASE_URL}/logistica/despacho`;
 
 export const obtenerDespachos = async () => {
   try {
@@ -14,19 +13,19 @@ export const obtenerDespachos = async () => {
 };
 
 export const crearDespacho = async (datos) => {
-  const respuesta = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(datos),
-  });
-  
-  const data = await respuesta.json();
-  if (!respuesta.ok) {
-    throw new Error(data.error || 'Error al crear el despacho'); 
+  try {
+    const respuesta = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos),
+    });
+    const data = await respuesta.json();
+    if (!respuesta.ok) throw new Error(data.error || 'Error al crear el despacho');
+    return data;
+  } catch (error) {
+    console.error("Error en crearDespacho:", error);
+    throw error;
   }
-  return data;
 };
 
 export const eliminarDespacho = async (id) => {

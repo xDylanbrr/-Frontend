@@ -33,15 +33,9 @@ const EmpaquePage = () => {
         : [];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-            <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                    <div>
-                        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">📦 Módulo de Empaque</h2>
-                        <p className="text-gray-500">Control de bultos y pesaje final de producción.</p>
-                    </div>
-                    
-                    {/* BUSCADOR PRO */}
+        <div className="p-4 md:p-8">
+            <div className="max-w-7xl mx-auto">
+                <div className="flex justify-end mb-6">
                     <div className="relative">
                         <input 
                             type="text"
@@ -55,7 +49,7 @@ const EmpaquePage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-1">
-                        <EmpaqueForm onEmpaqueAgregado={cargarEmpaques} />
+                        <EmpaqueForm onEmpaqueAgregado={cargarEmpaques} empaquesExistentes={listaEmpaques} />
                     </div>
                     <div className="lg:col-span-2">
                         <EmpaqueList empaques={empaquesFiltrados} actualizarLista={cargarEmpaques} />

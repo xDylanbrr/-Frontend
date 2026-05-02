@@ -36,7 +36,6 @@ function CotizacionesPage() {
       // Los datos ya vienen listos y validados desde CotizacionForm
       await crearCotizacion(datos);
       await cargarCotizaciones(); // Recargar lista
-      alert("¡Cotización guardada con éxito!");
     } catch (error) {
       alert("Error al crear: " + error.message);
     }
@@ -48,7 +47,6 @@ function CotizacionesPage() {
       await actualizarCotizacion(id, datos);
       setEditarCotizacion(null); // Salir del modo edición
       await cargarCotizaciones();
-      alert("¡Cotización actualizada!");
     } catch (error) {
       alert("Error al actualizar: " + error.message);
     }

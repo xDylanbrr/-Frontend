@@ -1,5 +1,5 @@
-  // src/services/produccion/orden_pedido.service.js
-const API_URL = 'https://backend-m3nj.onrender.com/api/produccion/orden-pedido';
+import API_BASE_URL from '../../apiConfig';
+const API_URL = `${API_BASE_URL}/produccion/orden-pedido`;
 
 export const obtenerOrdenes = async () => {
   try {

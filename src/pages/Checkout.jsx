@@ -356,7 +356,7 @@ export default function Checkout() {
     }
     setLoading(true);
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://backend-m3nj.onrender.com';
+      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
       // Limpiamos y formateamos los productos del carrito para que Prisma los entienda.
       const itemsFormateados = cart.map(item => ({

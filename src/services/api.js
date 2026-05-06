@@ -2,7 +2,7 @@ import axios from "axios";
 import { isTokenExpired, clearSession } from "../utils/auth";
 
 const BASE_URL =
-  (import.meta.env.VITE_API_URL || "https://backend-spfa.onrender.com") + "/api";
+  (import.meta.env.VITE_API_URL || "http://localhost:3000") + "/api";
 
 const api = axios.create({
   baseURL: BASE_URL,

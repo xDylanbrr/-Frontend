@@ -5,7 +5,7 @@ export default function FacturaList({ onNuevaFactura }) {
   const [loading, setLoading] = useState(true);
 
   // Reemplaza "3000" por el puerto donde corre tu backend si es diferente
-  const API_URL = 'https://backend-m3nj.onrender.com/api/facturas'; 
+  const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3000') + '/api/facturas'; 
 
   useEffect(() => {
     cargarFacturas();
